@@ -1,8 +1,10 @@
 package com.jonichi.soc.controllers;
 
 import com.jonichi.soc.config.JwtToken;
+import com.jonichi.soc.models.Account;
+import com.jonichi.soc.repositories.AccountRepository;
 import com.jonichi.soc.requests.JwtRequest;
-import com.jonichi.soc.responses.JwtResponse;
+import com.jonichi.soc.responses.JwtResponseV1;
 import com.jonichi.soc.services.JwtUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +32,9 @@ public class AuthControllerV1 {
     @Autowired
     private JwtUsersDetailsService jwtUserDetailsService;
 
+    @Autowired
+    private AccountRepository repository;
+
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(
             @RequestBody JwtRequest jwtRequest
@@ -35,12 +42,14 @@ public class AuthControllerV1 {
         authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-
+        final Account account = repository.findByUsername(jwtRequest.getUsername());
+        final HttpStatus status = HttpStatus.OK;
         final String token = jwtToken.generateToken(userDetails);
+        final String message = "Login Successful";
 
         return new ResponseEntity<>(
-                new JwtResponse(token),
-                HttpStatus.OK
+                new JwtResponseV1(token, account, status.value(), message),
+                status
         );
     }
 
