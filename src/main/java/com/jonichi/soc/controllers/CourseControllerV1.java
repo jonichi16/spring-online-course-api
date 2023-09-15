@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -63,6 +64,24 @@ public class CourseControllerV1 {
         try {
             return new ResponseEntity<>(
                     service.updateCourse(accountId, courseId, course),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "Unauthorized",
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+    }
+
+    @PutMapping(path = "/accounts/{accountId}/courses/{courseId}/archived")
+    public ResponseEntity<Object> archiveCourse(
+            @PathVariable Long accountId,
+            @PathVariable Long courseId
+    ) {
+        try {
+            return new ResponseEntity<>(
+                    service.archiveCourse(accountId, courseId),
                     HttpStatus.OK
             );
         } catch (Exception e) {

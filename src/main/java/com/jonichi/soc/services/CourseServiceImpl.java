@@ -52,4 +52,19 @@ public class CourseServiceImpl implements CourseService {
         }
 
     }
+
+    @Override
+    public Course archiveCourse(Long accountId, Long courseId) throws Exception {
+
+        Instructor instructor = repository.getInstructorByAccount(accountId).orElseThrow();
+
+        Course courseToUpdate = repository.findById(courseId).orElseThrow();
+        courseToUpdate.setArchived(!courseToUpdate.getArchived());
+        if (courseToUpdate.getInstructor().equals(instructor)) {
+            repository.save(courseToUpdate);
+            return courseToUpdate;
+        } else {
+            throw new Exception("Unauthorized");
+        }
+    }
 }

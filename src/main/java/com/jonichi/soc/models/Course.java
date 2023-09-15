@@ -21,6 +21,9 @@ public class Course {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "archived")
+    private Boolean isArchived = false;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -60,6 +63,14 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(Boolean archived) {
+        this.isArchived = archived;
     }
 
     public LocalDateTime getCreatedAt() {
