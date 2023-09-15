@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "instructor")
@@ -18,12 +19,11 @@ public class Instructor extends User {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
-    public Instructor() {
-    }
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Course> courses;
 
-    public Instructor(String email, LocalDateTime createdAt, LocalDateTime updatedAt, Account account) {
-        super(email, createdAt, updatedAt);
-        this.account = account;
+    public Instructor() {
     }
 
     public Role getRole() {
@@ -36,5 +36,9 @@ public class Instructor extends User {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

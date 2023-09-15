@@ -29,10 +29,8 @@ public abstract class User {
     public User() {
     }
 
-    public User(String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(String email) {
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {

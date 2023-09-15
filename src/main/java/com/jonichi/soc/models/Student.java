@@ -21,11 +21,6 @@ public class Student extends User {
     public Student() {
     }
 
-    public Student(String email, LocalDateTime createdAt, LocalDateTime updatedAt, Account account) {
-        super(email, createdAt, updatedAt);
-        this.account = account;
-    }
-
     public Role getRole() {
         return role;
     }
