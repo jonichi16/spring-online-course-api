@@ -35,7 +35,7 @@ public class CourseControllerV1 {
         );
     }
 
-    @PostMapping(path = "/accounts/{accountId}/courses")
+    @PostMapping(path = "/instructors/{accountId}/courses")
     public ResponseEntity<Object> addCourse(@PathVariable Long accountId, @RequestBody Course course) {
 
         try {
@@ -53,7 +53,7 @@ public class CourseControllerV1 {
         }
     }
 
-    @PutMapping(path = "/accounts/{accountId}/courses/{courseId}")
+    @PutMapping(path = "/instructors/{accountId}/courses/{courseId}")
     public ResponseEntity<Object> updateCourse(
             @PathVariable Long accountId,
             @PathVariable Long courseId,
@@ -72,7 +72,7 @@ public class CourseControllerV1 {
         }
     }
 
-    @PutMapping(path = "/accounts/{accountId}/courses/{courseId}/archived")
+    @PutMapping(path = "/instructors/{accountId}/courses/{courseId}/archived")
     public ResponseEntity<Object> archiveCourse(
             @PathVariable Long accountId,
             @PathVariable Long courseId
@@ -90,7 +90,7 @@ public class CourseControllerV1 {
         }
     }
 
-    @GetMapping(path = "/accounts/{accountId}/archived")
+    @GetMapping(path = "/instructors/{accountId}/archived")
     public ResponseEntity<Object> getArchivedCourses(@PathVariable Long accountId) {
         return new ResponseEntity<>(
                 service.getArchivedCourses(accountId),
