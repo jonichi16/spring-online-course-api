@@ -1,10 +1,12 @@
 package com.jonichi.soc.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "courses")
@@ -27,6 +29,9 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
     private Instructor instructor;
+
+    @OneToMany(mappedBy = "course")
+    Set<CourseStudent> courses;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -95,5 +100,10 @@ public class Course {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    @JsonIgnore
+    public Set<CourseStudent> getCourses() {
+        return courses;
     }
 }

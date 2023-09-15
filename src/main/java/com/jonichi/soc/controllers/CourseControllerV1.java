@@ -37,7 +37,6 @@ public class CourseControllerV1 {
 
     @PostMapping(path = "/instructors/{accountId}/courses")
     public ResponseEntity<Object> addCourse(@PathVariable Long accountId, @RequestBody Course course) {
-
         try {
             service.addCourse(accountId, course);
 
@@ -95,6 +94,19 @@ public class CourseControllerV1 {
         return new ResponseEntity<>(
                 service.getArchivedCourses(accountId),
                 HttpStatus.OK
+        );
+    }
+
+    @PostMapping(path = "/students/{accountId}/courses/{courseId}")
+    public ResponseEntity<Object> enrollCourse(
+            @PathVariable Long accountId,
+            @PathVariable Long courseId
+    ) {
+        service.enrollCourse(accountId, courseId);
+
+        return new ResponseEntity<>(
+                "Enrolled",
+                HttpStatus.CREATED
         );
     }
 

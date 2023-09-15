@@ -1,8 +1,8 @@
 package com.jonichi.soc.services;
 
-import com.jonichi.soc.models.Course;
-import com.jonichi.soc.models.Instructor;
+import com.jonichi.soc.models.*;
 import com.jonichi.soc.repositories.CourseRepository;
+import com.jonichi.soc.repositories.CourseStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,42 +10,46 @@ import org.springframework.stereotype.Service;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private final CourseRepository repository;
+    private final CourseRepository courseRepository;
 
-    public CourseServiceImpl(CourseRepository repository) {
-        this.repository = repository;
+    @Autowired
+    private final CourseStudentRepository courseStudentRepository;
+
+    public CourseServiceImpl(CourseRepository courseRepository, CourseStudentRepository courseStudentRepository) {
+        this.courseRepository = courseRepository;
+        this.courseStudentRepository = courseStudentRepository;
     }
 
     @Override
     public void addCourse(Long id, Course course) {
 
-        Instructor instructor = repository.getInstructorByAccount(id).orElseThrow();
+        Instructor instructor = courseRepository.findInstructorByAccountId(id).orElseThrow();
         course.setInstructor(instructor);
 
-        repository.save(course);
+        courseRepository.save(course);
     }
 
     @Override
     public Iterable<Course> getAllCourses() {
-        return repository.getAvailableCourses();
+        return courseRepository.getAvailableCourses();
     }
 
     @Override
     public Course getCourse(Long id) {
-        return repository.findById(id).orElseThrow();
+        return courseRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Course updateCourse(Long accountId, Long courseId, Course course) throws Exception {
 
-        Instructor instructor = repository.getInstructorByAccount(accountId).orElseThrow();
+        Instructor instructor = courseRepository.findInstructorByAccountId(accountId).orElseThrow();
 
-        Course courseToUpdate = repository.findById(courseId).orElseThrow();
+        Course courseToUpdate = courseRepository.findById(courseId).orElseThrow();
         courseToUpdate.setTitle(course.getTitle());
         courseToUpdate.setDescription(course.getDescription());
         courseToUpdate.setInstructor(instructor);
         if (courseToUpdate.getInstructor().equals(instructor)) {
-            repository.save(courseToUpdate);
+            courseRepository.save(courseToUpdate);
             return courseToUpdate;
         } else {
             throw new Exception("Unauthorized");
@@ -56,12 +60,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course archiveCourse(Long accountId, Long courseId) throws Exception {
 
-        Instructor instructor = repository.getInstructorByAccount(accountId).orElseThrow();
+        Instructor instructor = courseRepository.findInstructorByAccountId(accountId).orElseThrow();
 
-        Course courseToUpdate = repository.findById(courseId).orElseThrow();
+        Course courseToUpdate = courseRepository.findById(courseId).orElseThrow();
         courseToUpdate.setArchived(!courseToUpdate.getArchived());
         if (courseToUpdate.getInstructor().equals(instructor)) {
-            repository.save(courseToUpdate);
+            courseRepository.save(courseToUpdate);
             return courseToUpdate;
         } else {
             throw new Exception("Unauthorized");
@@ -70,6 +74,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Iterable<Course> getArchivedCourses(Long accountId) {
-        return repository.getArchivedCourses(accountId);
+        return courseRepository.getArchivedCourses(accountId);
+    }
+
+    @Override
+    public void enrollCourse(Long studentId, Long courseId) {
+        Student student = courseRepository.findStudentByAccountId(studentId).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        CourseStudentKey id = new CourseStudentKey(courseId, studentId);
+
+        CourseStudent courseStudent = new CourseStudent(id, student, course);
+
+        courseStudentRepository.save(courseStudent);
     }
 }

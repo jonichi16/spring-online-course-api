@@ -3,6 +3,7 @@ package com.jonichi.soc.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -17,6 +18,9 @@ public class Student extends User {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
+    @OneToMany(mappedBy = "student")
+    Set<CourseStudent> courses;
+
     public Student() {
     }
 
@@ -30,5 +34,9 @@ public class Student extends User {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Set<CourseStudent> getCourses() {
+        return courses;
     }
 }

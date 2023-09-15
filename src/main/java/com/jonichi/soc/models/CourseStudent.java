@@ -38,12 +38,10 @@ public class CourseStudent {
     public CourseStudent() {
     }
 
-    public CourseStudent(Student student, Course course, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CourseStudent(CourseStudentKey id, Student student, Course course) {
+        this.id = id;
         this.student = student;
         this.course = course;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public CourseStudentKey getId() {

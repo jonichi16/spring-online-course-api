@@ -8,10 +8,10 @@ import java.util.Objects;
 @Embeddable
 public class CourseStudentKey implements Serializable {
 
-    @Column(name = "course_id", nullable = false)
+    @Column(name = "course_id")
     private Long courseId;
 
-    @Column(name = "student_id", nullable = false)
+    @Column(name = "student_id")
     private Long studentId;
 
     public CourseStudentKey() {
@@ -43,7 +43,7 @@ public class CourseStudentKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CourseStudentKey that = (CourseStudentKey) o;
-        return courseId.equals(that.courseId) && studentId.equals(that.studentId);
+        return Objects.equals(courseId, that.courseId) && Objects.equals(studentId, that.studentId);
     }
 
     @Override
