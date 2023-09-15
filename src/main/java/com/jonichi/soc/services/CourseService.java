@@ -10,5 +10,6 @@ public interface CourseService {
     Course getCourse(Long id);
     Course updateCourse(Long accountId, Long courseId, Course course) throws Exception;
     Course archiveCourse(Long accountId, Long courseId) throws Exception;
+    Iterable<Course> getArchivedCourses(Long accountId);
 
 }

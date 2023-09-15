@@ -67,4 +67,9 @@ public class CourseServiceImpl implements CourseService {
             throw new Exception("Unauthorized");
         }
     }
+
+    @Override
+    public Iterable<Course> getArchivedCourses(Long accountId) {
+        return repository.getArchivedCourses(accountId);
+    }
 }

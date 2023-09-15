@@ -91,4 +91,13 @@ public class CourseControllerV1 {
             );
         }
     }
+
+    @GetMapping(path = "/accounts/{accountId}/archived")
+    public ResponseEntity<Object> getArchivedCourses(@PathVariable Long accountId) {
+        return new ResponseEntity<>(
+                service.getArchivedCourses(accountId),
+                HttpStatus.OK
+        );
+    }
+
 }

@@ -14,4 +14,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT i FROM Instructor i JOIN Account a ON a.id = i.account.id WHERE a.id = ?1")
     Optional<Instructor> getInstructorByAccount(Long id);
 
+    @Query("SELECT c FROM Course c WHERE c.instructor.account.id = ?1 AND archived = 1")
+    Iterable<Course> getArchivedCourses(Long accountId);
+
 }
