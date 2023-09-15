@@ -3,10 +3,8 @@ package com.jonichi.soc.services;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Instructor;
 import com.jonichi.soc.repositories.CourseRepository;
-import com.jonichi.soc.repositories.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -35,5 +33,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourse(Long id) {
         return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Course updateCourse(Long accountId, Long courseId, Course course) throws Exception {
+
+        Instructor instructor = repository.getInstructorByAccount(accountId).orElseThrow();
+
+        Course courseToUpdate = repository.findById(courseId).orElseThrow();
+        courseToUpdate.setTitle(course.getTitle());
+        courseToUpdate.setDescription(course.getDescription());
+        courseToUpdate.setInstructor(instructor);
+        if (courseToUpdate.getInstructor().equals(instructor)) {
+            repository.save(courseToUpdate);
+            return courseToUpdate;
+        } else {
+            throw new Exception("Unauthorized");
+        }
+
     }
 }
