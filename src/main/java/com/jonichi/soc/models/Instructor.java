@@ -6,22 +6,22 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "students")
-public class Student extends User {
+@Table(name = "instructor")
+public class Instructor extends User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private final Role role = Role.STUDENT;
+    private final Role role = Role.INSTRUCTOR;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
-    public Student() {
+    public Instructor() {
     }
 
-    public Student(String email, LocalDateTime createdAt, LocalDateTime updatedAt, Account account) {
+    public Instructor(String email, LocalDateTime createdAt, LocalDateTime updatedAt, Account account) {
         super(email, createdAt, updatedAt);
         this.account = account;
     }

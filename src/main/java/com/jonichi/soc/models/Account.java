@@ -21,6 +21,12 @@ public class Account {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "account")
+    private Student student;
+
+    @OneToOne(mappedBy = "account")
+    private Instructor instructor;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -29,18 +35,13 @@ public class Account {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private Student student;
 
     public Account() {
     }
 
-    public Account(String username, String password, Student student) {
+    public Account(String username, String password) {
         this.username = username;
         this.password = password;
-        this.student = student;
     }
 
     public Long getId() {
@@ -77,13 +78,5 @@ public class Account {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 }

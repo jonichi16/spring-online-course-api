@@ -29,12 +29,12 @@ public class StudentControllerV1 {
 
     @PostMapping
     public ResponseEntity<Object> regiterStudent(@RequestBody StudentDto student) {
-        Student newStudent = new Student();
-        newStudent.setEmail(student.getEmail());
         Account studentAccount = new Account();
         studentAccount.setUsername(student.getUsername());
         studentAccount.setPassword(student.getPassword());
-        studentAccount.setStudent(newStudent);
+        Student newStudent = new Student();
+        newStudent.setEmail(student.getEmail());
+        newStudent.setAccount(studentAccount);
 
         accountService.registerAccount(studentAccount);
         studentService.registerStudent(newStudent);
