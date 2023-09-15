@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/accounts").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/students").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // For any other requests (not covered by the previous rules), it enforces authentication,
                 // meaning users must be logged in and have a valid token to access endpoints that are not
