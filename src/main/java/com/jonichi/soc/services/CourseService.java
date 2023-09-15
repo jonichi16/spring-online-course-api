@@ -6,5 +6,6 @@ import com.jonichi.soc.models.Course;
 public interface CourseService {
 
     void addCourse(Long id, Course course);
+    Iterable<Course> getAllCourses();
 
 }

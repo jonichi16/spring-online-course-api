@@ -37,4 +37,12 @@ public class CourseControllerV1 {
             );
         }
     }
+
+    @GetMapping(path = "/courses")
+    public ResponseEntity<Object> getAllCourses() {
+        return new ResponseEntity<>(
+                service.getAllCourses(),
+                HttpStatus.OK
+        );
+    }
 }

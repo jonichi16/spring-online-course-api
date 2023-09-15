@@ -26,4 +26,9 @@ public class CourseServiceImpl implements CourseService {
 
         repository.save(course);
     }
+
+    @Override
+    public Iterable<Course> getAllCourses() {
+        return repository.findAll();
+    }
 }
