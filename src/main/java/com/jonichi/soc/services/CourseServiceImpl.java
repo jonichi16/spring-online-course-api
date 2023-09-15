@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Iterable<Course> getAllCourses() {
-        return repository.findAll();
+        return repository.getAvailableCourses();
     }
 
     @Override

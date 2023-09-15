@@ -3,7 +3,6 @@ package com.jonichi.soc.controllers;
 import com.jonichi.soc.dto.StudentDto;
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.Student;
-import com.jonichi.soc.models.User;
 import com.jonichi.soc.services.AccountService;
 import com.jonichi.soc.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
