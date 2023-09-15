@@ -1,8 +1,8 @@
 package com.jonichi.soc.controllers;
 
-import com.jonichi.soc.dto.InstructorDto;
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.Instructor;
+import com.jonichi.soc.requests.InstructorRequest;
 import com.jonichi.soc.services.AccountService;
 import com.jonichi.soc.services.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class InstructorControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<Object> registerInstructor(@RequestBody InstructorDto instructor) {
+    public ResponseEntity<Object> registerInstructor(@RequestBody InstructorRequest instructor) {
         Account instructorAccount = new Account();
         instructorAccount.setUsername(instructor.getUsername());
         instructorAccount.setPassword(instructor.getPassword());

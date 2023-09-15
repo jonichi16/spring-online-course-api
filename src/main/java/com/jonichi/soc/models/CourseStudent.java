@@ -1,5 +1,6 @@
 package com.jonichi.soc.models;
 
+import com.jonichi.soc.utils.Status;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

@@ -1,4 +1,4 @@
-package com.jonichi.soc.models;
+package com.jonichi.soc.responses;
 
 import java.io.Serializable;
 

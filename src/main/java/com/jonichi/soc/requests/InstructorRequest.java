@@ -1,15 +1,20 @@
-package com.jonichi.soc.dto;
+package com.jonichi.soc.requests;
 
-public class StudentDto {
+import java.io.Serializable;
+
+public class InstructorRequest implements Serializable {
+
+    private static final long serialVersionUID = -1091903722936477390L;
+
 
     private String username;
     private String password;
     private String email;
 
-    public StudentDto() {
+    public InstructorRequest() {
     }
 
-    public StudentDto(String username, String password, String email) {
+    public InstructorRequest(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -38,4 +43,5 @@ public class StudentDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

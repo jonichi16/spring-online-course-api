@@ -1,8 +1,8 @@
 package com.jonichi.soc.controllers;
 
 import com.jonichi.soc.config.JwtToken;
-import com.jonichi.soc.models.JwtRequest;
-import com.jonichi.soc.models.JwtResponse;
+import com.jonichi.soc.requests.JwtRequest;
+import com.jonichi.soc.responses.JwtResponse;
 import com.jonichi.soc.services.JwtUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

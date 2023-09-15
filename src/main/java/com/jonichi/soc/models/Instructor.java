@@ -1,6 +1,7 @@
 package com.jonichi.soc.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jonichi.soc.utils.Role;
 
 import javax.persistence.*;
 import java.util.Set;
