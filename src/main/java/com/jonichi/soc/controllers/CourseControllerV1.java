@@ -45,4 +45,12 @@ public class CourseControllerV1 {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping(path = "/courses/{courseId}")
+    public ResponseEntity<Object> getCourse(@PathVariable Long courseId) {
+        return new ResponseEntity<>(
+                service.getCourse(courseId),
+                HttpStatus.OK
+        );
+    }
 }

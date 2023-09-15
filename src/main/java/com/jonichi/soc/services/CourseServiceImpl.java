@@ -31,4 +31,9 @@ public class CourseServiceImpl implements CourseService {
     public Iterable<Course> getAllCourses() {
         return repository.findAll();
     }
+
+    @Override
+    public Course getCourse(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
 }
