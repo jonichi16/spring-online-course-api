@@ -1,6 +1,7 @@
 package com.jonichi.soc.controllers;
 
 import com.jonichi.soc.models.Course;
+import com.jonichi.soc.responses.ApiResponseV1;
 import com.jonichi.soc.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,18 +21,34 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses")
-    public ResponseEntity<Object> getAllCourses() {
+    public ResponseEntity<ApiResponseV1> getAllCourses() {
+
+        HttpStatus status = HttpStatus.OK;
+
+        ApiResponseV1 response = new ApiResponseV1();
+        response.setStatus(status.value());
+        response.setData(service.getAllCourses());
+        response.setMessage("Success");
+
         return new ResponseEntity<>(
-                service.getAllCourses(),
-                HttpStatus.OK
+                response,
+                status
         );
     }
 
     @GetMapping(path = "/courses/{courseId}")
     public ResponseEntity<Object> getCourse(@PathVariable Long courseId) {
+
+        HttpStatus status = HttpStatus.OK;
+
+        ApiResponseV1 response = new ApiResponseV1();
+        response.setStatus(status.value());
+        response.setData(service.getCourse(courseId));
+        response.setMessage("Success");
+
         return new ResponseEntity<>(
-                service.getCourse(courseId),
-                HttpStatus.OK
+                response,
+                status
         );
     }
 
