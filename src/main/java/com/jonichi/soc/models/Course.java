@@ -26,7 +26,7 @@ public class Course {
     private String imageUrl;
 
     @Column(name = "archived")
-    private Boolean isArchived = false;
+    private boolean isArchived = false;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)

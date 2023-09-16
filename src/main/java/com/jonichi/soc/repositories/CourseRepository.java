@@ -9,11 +9,9 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    @Query("SELECT c FROM Course c WHERE c.instructor.id = ?1 AND archived = 1")
-    List<Course> getArchivedCourses(Long accountId);
 
-    @Query("SELECT c FROM Course c WHERE archived = 0")
-    List<Course> getAvailableCourses();
+    List<Course> findByInstructorIdAndIsArchivedIsTrue(Long instructorId);
 
+    List<Course> findByIsArchivedIsFalse();
 
 }

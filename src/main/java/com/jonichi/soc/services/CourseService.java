@@ -38,7 +38,7 @@ public class CourseService {
     }
 
     public List<CourseDtoV1> getCoursesV1() {
-        return mapToCourseDtoV1List(courseRepository.getAvailableCourses());
+        return mapToCourseDtoV1List(courseRepository.findByIsArchivedIsFalse());
     }
 
     public CourseDtoV1 getCourseV1(Long id) {
@@ -80,8 +80,8 @@ public class CourseService {
         }
     }
 
-    public List<CourseDtoV1> getArchivedCoursesV1(Long userId) {
-        return mapToCourseDtoV1List(courseRepository.getArchivedCourses(userId));
+    public List<CourseDtoV1> getArchivedCoursesV1(Long instructorId) {
+        return mapToCourseDtoV1List(courseRepository.findByInstructorIdAndIsArchivedIsTrue(instructorId));
     }
 
     private List<CourseDtoV1> mapToCourseDtoV1List(List<Course> courses) {
