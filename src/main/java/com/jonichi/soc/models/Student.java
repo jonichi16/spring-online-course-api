@@ -14,11 +14,11 @@ public class Student extends User {
     @Column(name = "role", nullable = false)
     private final Role role = Role.STUDENT;
 
-    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "student")
     Set<CourseStudent> courses;
 

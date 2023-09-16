@@ -1,8 +1,10 @@
 package com.jonichi.soc.controllers.V1;
 
+import com.jonichi.soc.dto.V1.StudentDtoV1;
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.Student;
 import com.jonichi.soc.requests.StudentRequest;
+import com.jonichi.soc.responses.V1.ApiResponseV1;
 import com.jonichi.soc.services.AccountService;
 import com.jonichi.soc.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +29,17 @@ public class StudentControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<Object> registerStudent(@RequestBody StudentRequest student) {
-        Account studentAccount = new Account();
-        studentAccount.setUsername(student.getUsername());
-        studentAccount.setPassword(student.getPassword());
-        Student newStudent = new Student();
-        newStudent.setEmail(student.getEmail());
-        newStudent.setAccount(studentAccount);
+    public ResponseEntity<ApiResponseV1> registerStudent(@RequestBody StudentRequest student) {
 
-        accountService.registerAccount(studentAccount);
-        studentService.registerStudent(newStudent);
+        HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
-                newStudent,
-                HttpStatus.CREATED
+                new ApiResponseV1(
+                        status.value(),
+                        studentService.registerStudentV1(student),
+                        "Student registered successfully"
+                ),
+                status
         );
     }
 }

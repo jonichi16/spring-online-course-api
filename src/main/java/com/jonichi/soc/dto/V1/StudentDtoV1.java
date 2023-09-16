@@ -1,28 +1,28 @@
-package com.jonichi.soc.requests;
+package com.jonichi.soc.dto.V1;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class StudentRequest implements Serializable {
+public class StudentDtoV1 {
 
-    private static final long serialVersionUID = -5861079240717188042L;
-
+    private Long id;
     private String username;
-    private String password;
-
     private String fullName;
     private String email;
 
     private String imageUrl;
 
-    public StudentRequest() {
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public StudentDtoV1() {
     }
 
-    public StudentRequest(String username, String password, String fullName, String email, String imageUrl) {
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.imageUrl = imageUrl;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -31,14 +31,6 @@ public class StudentRequest implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFullName() {
@@ -63,5 +55,21 @@ public class StudentRequest implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
