@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -37,6 +38,9 @@ public class User implements UserDetails {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "student")
+    Set<Enroll> enrollCourses;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -101,6 +105,10 @@ public class User implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<Enroll> getEnrollCourses() {
+        return enrollCourses;
     }
 
     public LocalDateTime getCreatedAt() {

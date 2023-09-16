@@ -32,6 +32,9 @@ public class Course {
     @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
+    @OneToMany(mappedBy = "course")
+    Set<Enroll> students;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -92,6 +95,10 @@ public class Course {
 
     public void setInstructor(User instructor) {
         this.instructor = instructor;
+    }
+
+    public Set<Enroll> getStudents() {
+        return students;
     }
 
     public LocalDateTime getCreatedAt() {
