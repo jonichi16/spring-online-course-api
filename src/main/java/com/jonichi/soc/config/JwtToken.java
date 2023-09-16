@@ -1,7 +1,9 @@
 package com.jonichi.soc.config;
 
 import com.jonichi.soc.models.Account;
+import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.AccountRepository;
+import com.jonichi.soc.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,7 +26,7 @@ public class JwtToken implements Serializable {
     private String secret;
 
     @Autowired
-    private AccountRepository repository;
+    private UserRepository repository;
 
     private static final long serialVersionUID = -4246326795551877445L;
 
@@ -47,7 +49,7 @@ public class JwtToken implements Serializable {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        Account user = repository.findByUsername(userDetails.getUsername());
+        User user = repository.findByUsername(userDetails.getUsername()).orElseThrow();
         claims.put("user", user.getId());
         return doGenerateToken(claims, userDetails.getUsername());
 
