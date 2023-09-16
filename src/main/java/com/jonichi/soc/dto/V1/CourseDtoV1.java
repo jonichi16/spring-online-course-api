@@ -1,7 +1,5 @@
 package com.jonichi.soc.dto.V1;
 
-import com.jonichi.soc.models.Instructor;
-
 import java.time.LocalDateTime;
 
 public class CourseDtoV1 {

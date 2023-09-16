@@ -1,8 +1,6 @@
 package com.jonichi.soc.config;
 
-import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.User;
-import com.jonichi.soc.repositories.AccountRepository;
 import com.jonichi.soc.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -2,7 +2,7 @@ package com.jonichi.soc.dto.V1;
 
 import java.time.LocalDateTime;
 
-public class InstructorDtoV1 {
+public class UserDtoV1 {
 
     private Long id;
     private String username;
@@ -14,7 +14,7 @@ public class InstructorDtoV1 {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public InstructorDtoV1() {
+    public UserDtoV1() {
     }
 
     public Long getId() {
@@ -72,5 +72,4 @@ public class InstructorDtoV1 {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

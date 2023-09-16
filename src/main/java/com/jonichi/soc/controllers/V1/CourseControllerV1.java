@@ -1,12 +1,13 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.models.Course;
-import com.jonichi.soc.responses.V1.ApiResponseV1;
-import com.jonichi.soc.responses.V1.ExceptionResponseV1;
+import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
+import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
 import com.jonichi.soc.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,15 +23,15 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses")
-    public ResponseEntity<ApiResponseV1> getAllCourses() {
+    public ResponseEntity<ApiResponseV1> getCourses() {
 
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
-                setApiResponse(
-                        status,
-                        service.getAllCoursesV1(),
-                        "Success"
+                new ApiResponseV1(
+                        status.value(),
+                        service.getCoursesV1(),
+                        "Success!"
                 ),
                 status
         );
@@ -42,34 +43,36 @@ public class CourseControllerV1 {
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
-                setApiResponse(
-                        status,
+                new ApiResponseV1(
+                        status.value(),
                         service.getCourseV1(courseId),
-                        "Success"
+                        "Success!"
                 ),
                 status
         );
     }
 
-    @PostMapping(path = "/instructors/{accountId}/courses")
-    public ResponseEntity<?> addCourse(@PathVariable Long accountId, @RequestBody Course course) {
+
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @PostMapping(path = "/users/{userId}/courses")
+    public ResponseEntity<?> addCourse(@PathVariable Long userId, @RequestBody Course course) {
         try {
             HttpStatus status = HttpStatus.CREATED;
 
             return new ResponseEntity<>(
-                    setApiResponse(
-                            status,
-                            service.addCourseV1(accountId, course),
-                            "Success"
+                    new ApiResponseV1(
+                            status.value(),
+                            service.addCourseV1(userId, course),
+                            "Course added successfully!"
                     ),
                     status
             );
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             HttpStatus status = HttpStatus.UNAUTHORIZED;
 
             return new ResponseEntity<>(
-                    setExceptionResponse(
-                            status,
+                    new ExceptionResponseV1(
+                            status.value(),
                             e.getMessage(),
                             "Unauthorized"
                     ),
@@ -78,27 +81,28 @@ public class CourseControllerV1 {
         }
     }
 
-    @PutMapping(path = "/instructors/{accountId}/courses/{courseId}")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @PutMapping(path = "/users/{userId}/courses/{courseId}")
     public ResponseEntity<?> updateCourse(
-            @PathVariable Long accountId,
+            @PathVariable Long userId,
             @PathVariable Long courseId,
             @RequestBody Course course
     ) {
         try {
             HttpStatus status = HttpStatus.OK;
             return new ResponseEntity<>(
-                    setApiResponse(
-                            status,
-                            service.updateCourseV1(accountId, courseId, course),
-                            "Success"
+                    new ApiResponseV1(
+                            status.value(),
+                            service.updateCourseV1(userId, courseId, course),
+                            "Course updated successfully!"
                     ),
                     status
             );
         } catch (Exception e) {
             HttpStatus status = HttpStatus.UNAUTHORIZED;
             return new ResponseEntity<>(
-                    setExceptionResponse(
-                            status,
+                    new ExceptionResponseV1(
+                            status.value(),
                             e.getMessage(),
                             "Unauthorized"
                     ),
@@ -107,26 +111,27 @@ public class CourseControllerV1 {
         }
     }
 
-    @PutMapping(path = "/instructors/{accountId}/courses/{courseId}/archived")
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @PutMapping(path = "/users/{userId}/courses/{courseId}/archived")
     public ResponseEntity<?> archiveCourse(
-            @PathVariable Long accountId,
+            @PathVariable Long userId,
             @PathVariable Long courseId
     ) {
         try {
             HttpStatus status = HttpStatus.OK;
             return new ResponseEntity<>(
-                    setApiResponse(
-                            status,
-                            service.archiveCourseV1(accountId, courseId),
-                            "Success"
+                    new ApiResponseV1(
+                            status.value(),
+                            service.archiveCourseV1(userId, courseId),
+                            "Course archived successfully"
                     ),
                     status
             );
         } catch (Exception e) {
             HttpStatus status = HttpStatus.UNAUTHORIZED;
             return new ResponseEntity<>(
-                    setExceptionResponse(
-                            status,
+                    new ExceptionResponseV1(
+                            status.value(),
                             e.getMessage(),
                             "Unauthorized"
                     ),
@@ -135,62 +140,18 @@ public class CourseControllerV1 {
         }
     }
 
-    @GetMapping(path = "/instructors/{accountId}/archived")
-    public ResponseEntity<?> getArchivedCourses(@PathVariable Long accountId) {
+    @PreAuthorize("hasAuthority('INSTRUCTOR')")
+    @GetMapping(path = "/users/{userId}/archived")
+    public ResponseEntity<?> getArchivedCourses(@PathVariable Long userId) {
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(
-                setApiResponse(
-                        status,
-                        service.getArchivedCoursesV1(accountId),
+                new ApiResponseV1(
+                        status.value(),
+                        service.getArchivedCoursesV1(userId),
                         "Success"
                 ),
                 HttpStatus.OK
         );
-    }
-
-    @PostMapping(path = "/students/{accountId}/courses/{courseId}")
-    public ResponseEntity<?> enrollCourse(
-            @PathVariable Long accountId,
-            @PathVariable Long courseId
-    ) throws Exception {
-
-        try {
-            HttpStatus status = HttpStatus.CREATED;
-            return new ResponseEntity<>(
-                    setApiResponse(
-                            status,
-                            service.enrollCourseV1(accountId, courseId),
-                            "Enrolled Successfully"
-                    ),
-                    status
-            );
-        } catch (Exception e) {
-            HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-            return new ResponseEntity<>(
-                    setExceptionResponse(
-                            status,
-                            e.getMessage(),
-                            "Something went wrong!"
-                    ),
-                    HttpStatus.UNPROCESSABLE_ENTITY
-            );
-        }
-    }
-
-    private ApiResponseV1 setApiResponse(HttpStatus status, Object data, String message) {
-        ApiResponseV1 response = new ApiResponseV1();
-        response.setStatus(status.value());
-        response.setData(data);
-        response.setMessage(message);
-        return response;
-    }
-
-    private ExceptionResponseV1 setExceptionResponse(HttpStatus status, Object data, String message) {
-        ExceptionResponseV1 response = new ExceptionResponseV1();
-        response.setStatus(status.value());
-        response.setError(data);
-        response.setMessage(message);
-        return response;
     }
 
 }

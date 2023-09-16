@@ -1,4 +1,4 @@
-package com.jonichi.soc.requests;
+package com.jonichi.soc.utils.requests;
 
 import java.io.Serializable;
 

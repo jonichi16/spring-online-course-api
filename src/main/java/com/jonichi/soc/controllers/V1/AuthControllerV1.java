@@ -1,10 +1,11 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.config.JwtToken;
-import com.jonichi.soc.models.Account;
-import com.jonichi.soc.repositories.AccountRepository;
-import com.jonichi.soc.requests.JwtRequest;
-import com.jonichi.soc.responses.V1.JwtResponseV1;
+import com.jonichi.soc.dto.V1.UserDtoV1;
+import com.jonichi.soc.models.User;
+import com.jonichi.soc.repositories.UserRepository;
+import com.jonichi.soc.utils.requests.JwtRequest;
+import com.jonichi.soc.utils.responses.V1.JwtResponseV1;
 import com.jonichi.soc.services.JwtUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class AuthControllerV1 {
     private JwtUsersDetailsService jwtUserDetailsService;
 
     @Autowired
-    private AccountRepository repository;
+    private UserRepository repository;
 
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(
@@ -40,7 +41,7 @@ public class AuthControllerV1 {
         authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-        final Account account = repository.findByUsername(jwtRequest.getUsername());
+        final User user = repository.findByUsername(jwtRequest.getUsername()).orElseThrow();
         final HttpStatus status = HttpStatus.OK;
         final String token = jwtToken.generateToken(userDetails);
         final String message = "Login Successful";
@@ -48,7 +49,7 @@ public class AuthControllerV1 {
         return new ResponseEntity<>(
                 new JwtResponseV1(
                         token,
-                        account,
+                        mapToUserDtoV1(user),
                         status.value(),
                         message
                 ),
@@ -68,6 +69,20 @@ public class AuthControllerV1 {
             // user credentials
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    private UserDtoV1 mapToUserDtoV1(User user) {
+
+        UserDtoV1 userDtoV1 = new UserDtoV1();
+        userDtoV1.setId(user.getId());
+        userDtoV1.setUsername(user.getUsername());
+        userDtoV1.setFullName(user.getFullName());
+        userDtoV1.setEmail(user.getEmail());
+        userDtoV1.setImageUrl(user.getImageUrl());
+        userDtoV1.setCreatedAt(user.getCreatedAt());
+        userDtoV1.setUpdatedAt(user.getUpdatedAt());
+
+        return userDtoV1;
     }
 
 }

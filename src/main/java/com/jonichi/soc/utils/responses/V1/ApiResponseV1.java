@@ -1,4 +1,4 @@
-package com.jonichi.soc.responses.V1;
+package com.jonichi.soc.utils.responses.V1;
 
 public class ApiResponseV1 {
 

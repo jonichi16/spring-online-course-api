@@ -22,15 +22,16 @@ public class Course {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "archived")
     private Boolean isArchived = false;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id", nullable = false)
-    private Instructor instructor;
+    private User instructor;
 
-    @OneToMany(mappedBy = "course")
-    Set<CourseStudent> courses;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -42,10 +43,11 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, String description, Instructor instructor) {
+    public Course(String title, String description, String imageUrl, Boolean isArchived) {
         this.title = title;
         this.description = description;
-        this.instructor = instructor;
+        this.imageUrl = imageUrl;
+        this.isArchived = isArchived;
     }
 
     public Long getId() {
@@ -64,6 +66,14 @@ public class Course {
         return description;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -74,6 +84,14 @@ public class Course {
 
     public void setArchived(Boolean archived) {
         this.isArchived = archived;
+    }
+
+    public User getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(User instructor) {
+        this.instructor = instructor;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -92,16 +110,4 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
-    public Instructor getInstructor() {
-        return instructor;
-    }
-
-    public void setInstructor(Instructor instructor) {
-        this.instructor = instructor;
-    }
-
-    @JsonIgnore
-    public Set<CourseStudent> getCourses() {
-        return courses;
-    }
 }

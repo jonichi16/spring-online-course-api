@@ -5,6 +5,8 @@ public class CourseInstructorDtoV1 {
     private Long instructorId;
     private String email;
 
+    private String instructorImgUrl;
+
     public CourseInstructorDtoV1() {
     }
 
@@ -22,5 +24,13 @@ public class CourseInstructorDtoV1 {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getInstructorImgUrl() {
+        return instructorImgUrl;
+    }
+
+    public void setInstructorImgUrl(String instructorImgUrl) {
+        this.instructorImgUrl = instructorImgUrl;
     }
 }

@@ -1,7 +1,7 @@
 package com.jonichi.soc.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jonichi.soc.utils.Role;
+import com.jonichi.soc.utils.enums.Role;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @JsonIgnore
+//    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     @JsonIgnore
-    private Role role;
+    private Role role = Role.STUDENT;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

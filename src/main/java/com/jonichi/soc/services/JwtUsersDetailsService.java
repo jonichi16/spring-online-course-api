@@ -1,8 +1,6 @@
 package com.jonichi.soc.services;
 
-import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.User;
-import com.jonichi.soc.repositories.AccountRepository;
 import com.jonichi.soc.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +36,7 @@ public class JwtUsersDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                new ArrayList<>()
+                user.getAuthorities()
         );
     }
 }

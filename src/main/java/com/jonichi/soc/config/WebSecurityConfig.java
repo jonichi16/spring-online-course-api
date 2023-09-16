@@ -1,6 +1,7 @@
 package com.jonichi.soc.config;
 
 import com.jonichi.soc.services.JwtUsersDetailsService;
+import com.jonichi.soc.utils.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/*/courses/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/*/students").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/*/instructors").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/*/users").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // For any other requests (not covered by the previous rules), it enforces authentication,
                 // meaning users must be logged in and have a valid token to access endpoints that are not
