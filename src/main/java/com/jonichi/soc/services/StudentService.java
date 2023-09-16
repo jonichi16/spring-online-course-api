@@ -1,7 +1,6 @@
 package com.jonichi.soc.services;
 
 import com.jonichi.soc.dto.V1.StudentDtoV1;
-import com.jonichi.soc.models.Student;
 import com.jonichi.soc.requests.StudentRequest;
 
 public interface StudentService {

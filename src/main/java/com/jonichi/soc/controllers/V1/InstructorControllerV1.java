@@ -3,6 +3,7 @@ package com.jonichi.soc.controllers.V1;
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.Instructor;
 import com.jonichi.soc.requests.InstructorRequest;
+import com.jonichi.soc.responses.V1.ApiResponseV1;
 import com.jonichi.soc.services.AccountService;
 import com.jonichi.soc.services.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,15 @@ public class InstructorControllerV1 {
 
     @PostMapping
     public ResponseEntity<Object> registerInstructor(@RequestBody InstructorRequest instructor) {
-        Account instructorAccount = new Account();
-        instructorAccount.setUsername(instructor.getUsername());
-        instructorAccount.setPassword(instructor.getPassword());
-        Instructor newInstructor = new Instructor();
-        newInstructor.setEmail(instructor.getEmail());
-        newInstructor.setAccount(instructorAccount);
 
-        accountService.registerAccount(instructorAccount);
-        instructorService.registerInstructor(newInstructor);
+        HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
-                newInstructor,
+                new ApiResponseV1(
+                        status.value(),
+                        instructorService.registerInstructorV1(instructor),
+                        "Instructor registered successfully!"
+                ),
                 HttpStatus.CREATED
         );
     }
