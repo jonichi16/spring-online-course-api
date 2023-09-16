@@ -1,17 +1,17 @@
-package com.jonichi.soc.responses;
+package com.jonichi.soc.responses.V1;
 
-public class ApiResponseV1 {
+public class ExceptionResponseV1 {
 
     private int status;
-    private Object data;
+    private Object error;
     private String message;
 
-    public ApiResponseV1() {
+    public ExceptionResponseV1() {
     }
 
-    public ApiResponseV1(int status, Object data, String message) {
+    public ExceptionResponseV1(int status, Object error, String message) {
         this.status = status;
-        this.data = data;
+        this.error = error;
         this.message = message;
     }
 
@@ -23,12 +23,12 @@ public class ApiResponseV1 {
         this.status = status;
     }
 
-    public Object getData() {
-        return data;
+    public Object getError() {
+        return error;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setError(Object error) {
+        this.error = error;
     }
 
     public String getMessage() {
@@ -38,4 +38,5 @@ public class ApiResponseV1 {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }

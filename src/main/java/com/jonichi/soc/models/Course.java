@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "courses")
 public class Course {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_sequence")
     @SequenceGenerator(name = "course_sequence", sequenceName = "course_sequence", allocationSize = 1)
@@ -32,7 +31,6 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     Set<CourseStudent> courses;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

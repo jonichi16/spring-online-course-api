@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,10 +20,10 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Student> findStudentByAccountId(Long accountId);
 
     @Query("SELECT c FROM Course c WHERE c.instructor.account.id = ?1 AND archived = 1")
-    Iterable<Course> getArchivedCourses(Long accountId);
+    List<Course> getArchivedCourses(Long accountId);
 
     @Query("SELECT c FROM Course c WHERE archived = 0")
-    Iterable<Course> getAvailableCourses();
+    List<Course> getAvailableCourses();
 
 
 }

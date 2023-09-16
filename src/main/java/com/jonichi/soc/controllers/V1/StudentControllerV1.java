@@ -1,4 +1,4 @@
-package com.jonichi.soc.controllers;
+package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.models.Student;

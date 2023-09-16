@@ -1,10 +1,10 @@
-package com.jonichi.soc.controllers;
+package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.config.JwtToken;
 import com.jonichi.soc.models.Account;
 import com.jonichi.soc.repositories.AccountRepository;
 import com.jonichi.soc.requests.JwtRequest;
-import com.jonichi.soc.responses.JwtResponseV1;
+import com.jonichi.soc.responses.V1.JwtResponseV1;
 import com.jonichi.soc.services.JwtUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +46,12 @@ public class AuthControllerV1 {
         final String message = "Login Successful";
 
         return new ResponseEntity<>(
-                new JwtResponseV1(token, account, status.value(), message),
+                new JwtResponseV1(
+                        token,
+                        account,
+                        status.value(),
+                        message
+                ),
                 status
         );
     }
