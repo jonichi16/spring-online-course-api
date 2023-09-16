@@ -12,6 +12,6 @@ public interface CourseService {
     Course archiveCourse(Long accountId, Long courseId) throws Exception;
     Iterable<Course> getArchivedCourses(Long accountId);
 
-    void enrollCourse(Long studentId, Long courseId);
+    void enrollCourse(Long studentId, Long courseId) throws Exception;
 
 }

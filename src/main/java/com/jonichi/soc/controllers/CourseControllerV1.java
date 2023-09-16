@@ -118,13 +118,20 @@ public class CourseControllerV1 {
     public ResponseEntity<Object> enrollCourse(
             @PathVariable Long accountId,
             @PathVariable Long courseId
-    ) {
-        service.enrollCourse(accountId, courseId);
+    ) throws Exception {
 
-        return new ResponseEntity<>(
-                "Enrolled",
-                HttpStatus.CREATED
-        );
+        try {
+            service.enrollCourse(accountId, courseId);
+            return new ResponseEntity<>(
+                    "Enrolled",
+                    HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    e.getMessage(),
+                    HttpStatus.UNPROCESSABLE_ENTITY
+            );
+        }
     }
 
 }

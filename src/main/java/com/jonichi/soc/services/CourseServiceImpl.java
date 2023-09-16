@@ -78,13 +78,16 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void enrollCourse(Long studentId, Long courseId) {
+    public void enrollCourse(Long studentId, Long courseId) throws Exception {
         Student student = courseRepository.findStudentByAccountId(studentId).orElseThrow();
         Course course = courseRepository.findById(courseId).orElseThrow();
         CourseStudentKey id = new CourseStudentKey(courseId, studentId);
 
-        CourseStudent courseStudent = new CourseStudent(id, student, course);
-
-        courseStudentRepository.save(courseStudent);
+        if (!course.getArchived()) {
+            CourseStudent courseStudent = new CourseStudent(id, student, course);
+            courseStudentRepository.save(courseStudent);
+        } else {
+            throw new Exception("Course is archived!");
+        }
     }
 }
