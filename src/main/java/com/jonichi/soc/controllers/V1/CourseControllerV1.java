@@ -1,9 +1,11 @@
 package com.jonichi.soc.controllers.V1;
 
+import com.jonichi.soc.exceptions.CourseNotFoundException;
+import com.jonichi.soc.exceptions.UnauthorizedCourseInstructorException;
+import com.jonichi.soc.exceptions.UserNotFoundException;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.services.CourseService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
-import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses/{courseId}")
-    public ResponseEntity<ApiResponseV1> getCourse(@PathVariable Long courseId) {
+    public ResponseEntity<ApiResponseV1> getCourse(@PathVariable Long courseId) throws CourseNotFoundException {
 
         HttpStatus status = HttpStatus.OK;
 
@@ -59,30 +61,20 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @PostMapping(path = "/users/{userId}/courses")
-    public ResponseEntity<?> addCourse(@PathVariable Long userId, @RequestBody Course course) {
-        try {
-            HttpStatus status = HttpStatus.CREATED;
+    public ResponseEntity<?> addCourse(
+            @PathVariable Long userId,
+            @RequestBody Course course
+    ) throws UserNotFoundException {
+        HttpStatus status = HttpStatus.CREATED;
 
-            return new ResponseEntity<>(
-                    new ApiResponseV1(
-                            status.value(),
-                            service.addCourseV1(userId, course),
-                            "Course added successfully!"
-                    ),
-                    status
-            );
-        } catch (Exception e) {
-            HttpStatus status = HttpStatus.UNAUTHORIZED;
-
-            return new ResponseEntity<>(
-                    new ExceptionResponseV1(
-                            status.value(),
-                            e.getMessage(),
-                            "Unauthorized"
-                    ),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.addCourseV1(userId, course),
+                        "Course added successfully!"
+                ),
+                status
+        );
     }
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
@@ -91,28 +83,19 @@ public class CourseControllerV1 {
             @PathVariable Long userId,
             @PathVariable Long courseId,
             @RequestBody Course course
-    ) {
-        try {
-            HttpStatus status = HttpStatus.OK;
-            return new ResponseEntity<>(
-                    new ApiResponseV1(
-                            status.value(),
-                            service.updateCourseV1(userId, courseId, course),
-                            "Course updated successfully!"
-                    ),
-                    status
-            );
-        } catch (Exception e) {
-            HttpStatus status = HttpStatus.UNAUTHORIZED;
-            return new ResponseEntity<>(
-                    new ExceptionResponseV1(
-                            status.value(),
-                            e.getMessage(),
-                            "Unauthorized"
-                    ),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
+    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.updateCourseV1(userId, courseId, course),
+                        "Course updated successfully!"
+                ),
+                status
+        );
+
     }
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
@@ -120,28 +103,19 @@ public class CourseControllerV1 {
     public ResponseEntity<?> archiveCourse(
             @PathVariable Long userId,
             @PathVariable Long courseId
-    ) {
-        try {
-            HttpStatus status = HttpStatus.OK;
-            return new ResponseEntity<>(
-                    new ApiResponseV1(
-                            status.value(),
-                            service.archiveCourseV1(userId, courseId),
-                            "Course archived successfully"
-                    ),
-                    status
-            );
-        } catch (Exception e) {
-            HttpStatus status = HttpStatus.UNAUTHORIZED;
-            return new ResponseEntity<>(
-                    new ExceptionResponseV1(
-                            status.value(),
-                            e.getMessage(),
-                            "Unauthorized"
-                    ),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
+    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.archiveCourseV1(userId, courseId),
+                        "Course archived successfully"
+                ),
+                status
+        );
+
     }
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")

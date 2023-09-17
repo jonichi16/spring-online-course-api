@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
 @RequestMapping(path = "/api/v1/users")
@@ -21,7 +23,7 @@ public class UserControllerV1 {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponseV1> registerUser(@RequestBody User user) {
+    public ResponseEntity<ApiResponseV1> registerUser(@RequestBody @Valid User user) {
 
         HttpStatus status = HttpStatus.CREATED;
 

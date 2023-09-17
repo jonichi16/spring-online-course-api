@@ -8,7 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -22,16 +27,32 @@ public class User implements UserDetails {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     private Long id;
 
+    @NotNull(message = "Username should not be empty")
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-//    @JsonIgnore
+    @NotNull(message = "Password should not be empty")
+    @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%]).{8,}$",
+            message = """
+                    Password should be:
+                    At least 8 characters in length.
+                    Contains at least one uppercase letter.
+                    Contains at least one lowercase letter.
+                    Contains at least one digit (0-9).
+                    Contains at least one special character from the set [!@#$%]"""
+    )
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotNull(message = "Full name should not be empty")
+    @NotBlank(message = "Full name should not be empty")
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    @Email(message = "Email should be valid")
+    @NotNull(message = "Email should not be empty")
+    @NotBlank(message = "Email should not be empty")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -39,7 +60,7 @@ public class User implements UserDetails {
     private String imageUrl;
 
     @OneToMany(mappedBy = "student")
-    private Set<Enroll> enrollCourses;
+    private List<Enroll> enrollCourses = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -105,7 +126,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public Set<Enroll> getEnrollCourses() {
+    public List<Enroll> getEnrollCourses() {
         return enrollCourses;
     }
 

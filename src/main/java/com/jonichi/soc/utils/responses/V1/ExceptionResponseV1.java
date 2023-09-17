@@ -4,15 +4,13 @@ public class ExceptionResponseV1 {
 
     private int status;
     private Object error;
-    private String message;
 
     public ExceptionResponseV1() {
     }
 
-    public ExceptionResponseV1(int status, Object error, String message) {
+    public ExceptionResponseV1(int status, Object error) {
         this.status = status;
         this.error = error;
-        this.message = message;
     }
 
     public int getStatus() {
@@ -30,13 +28,4 @@ public class ExceptionResponseV1 {
     public void setError(Object error) {
         this.error = error;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
 }

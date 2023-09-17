@@ -67,7 +67,7 @@ public class Mapper {
 
     }
 
-    public static List<EnrollCourseDtoV1> mapToEnrollCourseDtoV1List(Set<Enroll> enrolls) {
+    public static List<EnrollCourseDtoV1> mapToEnrollCourseDtoV1List(List<Enroll> enrolls) {
 
         List<EnrollCourseDtoV1> enrollCourseDtoList = new ArrayList<>();
         for (Enroll enroll : enrolls) {
