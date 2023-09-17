@@ -2,6 +2,7 @@ package com.jonichi.soc.services;
 
 import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.dto.V1.EnrollStudentsDtoV1;
+import com.jonichi.soc.exceptions.*;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Enroll;
 import com.jonichi.soc.models.User;
@@ -37,23 +38,30 @@ public class EnrollService {
         this.courseRepository = courseRepository;
     }
 
-    public EnrollCourseDtoV1 enrollCourseV1(Long studentId, Long courseId) throws Exception {
+    public EnrollCourseDtoV1 enrollCourseV1(
+            Long studentId,
+            Long courseId
+    ) throws NotFoundException, InvalidEntityException {
 
-        User student = userRepository.findById(studentId).orElseThrow();
-        Course course = courseRepository.findById(courseId).orElseThrow();
+        User student = userRepository.findById(studentId).orElseThrow(
+                () -> new NotFoundException("Student not found!")
+        );
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new NotFoundException("Course not found!")
+        );
 
         Enroll existingEnroll = enrollRepository.findByStudentIdAndCourseId(studentId, courseId);
 
         if (existingEnroll != null) {
-            throw new Exception("User already enrolled to this course!");
+            throw new InvalidEntityException("User already enrolled to this course!");
         }
 
         if (course.getInstructor().equals(student)) {
-            throw new Exception("You own this course");
+            throw new InvalidEntityException("You own this course");
         }
 
         if (course.getArchived()) {
-            throw new Exception("Course is archived");
+            throw new InvalidEntityException("Course is archived");
         }
 
         Enroll enroll = new Enroll(student, course);
@@ -62,13 +70,20 @@ public class EnrollService {
         return Mapper.mapToEnrollCourseDtoV1(enroll);
     }
 
-    public List<EnrollStudentsDtoV1> getCourseStudentsV1(Long instructorId, Long courseId) throws Exception {
+    public List<EnrollStudentsDtoV1> getCourseStudentsV1(
+            Long instructorId,
+            Long courseId
+    ) throws NotFoundException, UnauthorizedException {
 
-        Course course = courseRepository.findById(courseId).orElseThrow();
-        User instructor = userRepository.findById(instructorId).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new NotFoundException("Course not found!")
+        );
+        User instructor = userRepository.findById(instructorId).orElseThrow(
+                () -> new NotFoundException("Instructor not found!")
+        );
 
         if (!course.getInstructor().equals(instructor)) {
-            throw new Exception("Unauthorized");
+            throw new UnauthorizedException("Unauthorized instructor!");
         }
 
         List<Enroll> enrolls = enrollRepository.findByCourseId(courseId);

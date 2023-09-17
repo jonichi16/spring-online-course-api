@@ -1,5 +1,6 @@
 package com.jonichi.soc.controllers.V1;
 
+import com.jonichi.soc.exceptions.NotFoundException;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.services.UserService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
@@ -38,7 +39,7 @@ public class UserControllerV1 {
     }
 
     @PutMapping(path = "/{userId}/instructors")
-    public ResponseEntity<ApiResponseV1> updateRole(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponseV1> updateRole(@PathVariable Long userId) throws NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
 

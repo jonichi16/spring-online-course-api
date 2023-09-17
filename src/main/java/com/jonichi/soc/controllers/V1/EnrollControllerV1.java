@@ -1,5 +1,6 @@
 package com.jonichi.soc.controllers.V1;
 
+import com.jonichi.soc.exceptions.*;
 import com.jonichi.soc.services.EnrollService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
@@ -25,7 +26,7 @@ public class EnrollControllerV1 {
     public ResponseEntity<?> enrollCourse(
             @PathVariable Long studentId,
             @PathVariable Long courseId
-    ) throws Exception {
+    ) throws NotFoundException, InvalidEntityException {
         HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
@@ -44,29 +45,17 @@ public class EnrollControllerV1 {
     public ResponseEntity<?> getCourseStudents(
             @PathVariable Long instructorId,
             @PathVariable Long courseId
-    ) {
-        try {
-            HttpStatus status = HttpStatus.OK;
+    ) throws UnauthorizedException, NotFoundException {
+        HttpStatus status = HttpStatus.OK;
 
-            return new ResponseEntity<>(
-                    new ApiResponseV1(
-                            status.value(),
-                            service.getCourseStudentsV1(instructorId, courseId),
-                            "Success!"
-                    ),
-                    status
-            );
-        } catch (Exception e) {
-            HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-
-            return new ResponseEntity<>(
-                    new ExceptionResponseV1(
-                            status.value(),
-                            e.getMessage()
-                    ),
-                    status
-            );
-        }
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.getCourseStudentsV1(instructorId, courseId),
+                        "Success!"
+                ),
+                status
+        );
     }
 
 }

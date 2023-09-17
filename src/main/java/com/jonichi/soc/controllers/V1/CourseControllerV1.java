@@ -1,8 +1,7 @@
 package com.jonichi.soc.controllers.V1;
 
-import com.jonichi.soc.exceptions.CourseNotFoundException;
-import com.jonichi.soc.exceptions.UnauthorizedCourseInstructorException;
-import com.jonichi.soc.exceptions.UserNotFoundException;
+import com.jonichi.soc.exceptions.NotFoundException;
+import com.jonichi.soc.exceptions.UnauthorizedException;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.services.CourseService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
@@ -44,7 +43,7 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses/{courseId}")
-    public ResponseEntity<ApiResponseV1> getCourse(@PathVariable Long courseId) throws CourseNotFoundException {
+    public ResponseEntity<ApiResponseV1> getCourse(@PathVariable Long courseId) throws NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
 
@@ -64,7 +63,7 @@ public class CourseControllerV1 {
     public ResponseEntity<?> addCourse(
             @PathVariable Long userId,
             @RequestBody Course course
-    ) throws UserNotFoundException {
+    ) throws NotFoundException {
         HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
@@ -83,7 +82,7 @@ public class CourseControllerV1 {
             @PathVariable Long userId,
             @PathVariable Long courseId,
             @RequestBody Course course
-    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+    ) throws UnauthorizedException, NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
 
@@ -103,7 +102,7 @@ public class CourseControllerV1 {
     public ResponseEntity<?> archiveCourse(
             @PathVariable Long userId,
             @PathVariable Long courseId
-    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+    ) throws UnauthorizedException, NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
 

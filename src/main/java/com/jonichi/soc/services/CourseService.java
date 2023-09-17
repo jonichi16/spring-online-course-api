@@ -1,9 +1,8 @@
 package com.jonichi.soc.services;
 
 import com.jonichi.soc.dto.V1.CourseDtoV1;
-import com.jonichi.soc.exceptions.CourseNotFoundException;
-import com.jonichi.soc.exceptions.UnauthorizedCourseInstructorException;
-import com.jonichi.soc.exceptions.UserNotFoundException;
+import com.jonichi.soc.exceptions.NotFoundException;
+import com.jonichi.soc.exceptions.UnauthorizedException;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.CourseRepository;
@@ -30,10 +29,10 @@ public class CourseService {
     }
 
     // V1 of CourseService
-    public CourseDtoV1 addCourseV1(Long userId, Course course) throws UserNotFoundException {
+    public CourseDtoV1 addCourseV1(Long userId, Course course) throws NotFoundException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("Instructor not found!")
+                () -> new NotFoundException("Instructor not found!")
         );
 
         course.setInstructor(instructor);
@@ -54,9 +53,9 @@ public class CourseService {
         return Mapper.mapToCourseDtoV1Page(courses);
     }
 
-    public CourseDtoV1 getCourseV1(Long id) throws CourseNotFoundException {
+    public CourseDtoV1 getCourseV1(Long id) throws NotFoundException {
         Course course = courseRepository.findById(id).orElseThrow(
-                () -> new CourseNotFoundException("Course not found!")
+                () -> new NotFoundException("Course not found!")
         );
 
         return Mapper.mapToCourseDtoV1(course);
@@ -66,18 +65,18 @@ public class CourseService {
             Long userId,
             Long courseId,
             Course course
-    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+    ) throws NotFoundException, UnauthorizedException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("Instructor not found!")
+                () -> new NotFoundException("Instructor not found!")
         );
 
         Course courseToUpdate = courseRepository.findById(courseId).orElseThrow(
-                () -> new CourseNotFoundException("Course not found!")
+                () -> new NotFoundException("Course not found!")
         );
 
         if (!courseToUpdate.getInstructor().equals(instructor)) {
-            throw new UnauthorizedCourseInstructorException("Unauthorized instructor!");
+            throw new UnauthorizedException("Unauthorized instructor!");
         }
 
         courseToUpdate.setTitle(course.getTitle());
@@ -93,18 +92,18 @@ public class CourseService {
     public CourseDtoV1 archiveCourseV1(
             Long userId,
             Long courseId
-    ) throws UserNotFoundException, CourseNotFoundException, UnauthorizedCourseInstructorException {
+    ) throws NotFoundException, UnauthorizedException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("Instructor not found!")
+                () -> new NotFoundException("Instructor not found!")
         );
 
         Course courseToUpdate = courseRepository.findById(courseId).orElseThrow(
-                () -> new CourseNotFoundException("Course not found!")
+                () -> new NotFoundException("Course not found!")
         );
 
         if (!courseToUpdate.getInstructor().equals(instructor)) {
-            throw new UnauthorizedCourseInstructorException("Unauthorized instructor!");
+            throw new UnauthorizedException("Unauthorized instructor!");
         }
 
         courseToUpdate.setArchived(!courseToUpdate.getArchived());

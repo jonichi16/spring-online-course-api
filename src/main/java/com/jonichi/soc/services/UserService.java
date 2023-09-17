@@ -1,6 +1,7 @@
 package com.jonichi.soc.services;
 
 import com.jonichi.soc.dto.V1.UserDtoV1;
+import com.jonichi.soc.exceptions.NotFoundException;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.utils.enums.Role;
@@ -30,9 +31,11 @@ public class UserService {
         return Mapper.mapToUserDtoV1(user);
     }
 
-    public UserDtoV1 updateRoleV1(Long id) {
+    public UserDtoV1 updateRoleV1(Long id) throws NotFoundException {
 
-        User user = repository.findById(id).orElseThrow();
+        User user = repository.findById(id).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
         user.setRole(Role.INSTRUCTOR);
 
         repository.save(user);
