@@ -4,6 +4,7 @@ import com.jonichi.soc.dto.V1.*;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Enroll;
 import com.jonichi.soc.models.User;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,10 @@ public class Mapper {
             courseDtoList.add(courseDtoV1);
         }
         return courseDtoList;
+    }
+
+    public static Page<CourseDtoV1> mapToCourseDtoV1Page(Page<Course> courses) {
+        return courses.map(Mapper::mapToCourseDtoV1);
     }
 
 }

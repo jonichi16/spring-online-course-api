@@ -7,6 +7,9 @@ import com.jonichi.soc.repositories.CourseRepository;
 import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.utils.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,10 +39,16 @@ public class CourseService {
         return Mapper.mapToCourseDtoV1(course);
     }
 
-    public List<CourseDtoV1> getCoursesV1() {
-        return Mapper.mapToCourseDtoV1List(
-                courseRepository.findByIsArchivedIsFalse()
-        );
+    public Page<CourseDtoV1> getCoursesV1(int page, Integer pageSize, String sortBy) {
+
+        if (pageSize == null) {
+            pageSize = courseRepository.countByIsArchivedIsFalse();
+        }
+
+        PageRequest pageable = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<Course> courses = courseRepository.findByIsArchivedIsFalse(pageable);
+
+        return Mapper.mapToCourseDtoV1Page(courses);
     }
 
     public CourseDtoV1 getCourseV1(Long id) {
@@ -82,10 +91,24 @@ public class CourseService {
         }
     }
 
-    public List<CourseDtoV1> getArchivedCoursesV1(Long instructorId) {
-        return Mapper.mapToCourseDtoV1List(
-                courseRepository.findByInstructorIdAndIsArchivedIsTrue(instructorId)
+    public Page<CourseDtoV1> getArchivedCoursesV1(
+            Long instructorId,
+            int page,
+            Integer pageSize,
+            String sortBy
+    ) {
+
+        if (pageSize == null) {
+            pageSize = courseRepository.countByInstructorIdAndIsArchivedIsTrue(instructorId);
+        }
+
+        PageRequest pageable = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<Course> archivedCourses = courseRepository.findByInstructorIdAndIsArchivedIsTrue(
+                instructorId,
+                pageable
         );
+
+        return Mapper.mapToCourseDtoV1Page(archivedCourses);
     }
 
 }

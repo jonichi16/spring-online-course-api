@@ -71,7 +71,6 @@ public class EnrollService {
             throw new Exception("Unauthorized");
         }
 
-
         List<Enroll> enrolls = enrollRepository.findByCourseId(courseId);
         return Mapper.mapToEnrollStudentDtoV1List(enrolls);
     }

@@ -23,14 +23,18 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses")
-    public ResponseEntity<ApiResponseV1> getCourses() {
+    public ResponseEntity<ApiResponseV1> getCourses(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false) Integer pageSize,
+            @RequestParam(name = "sort", defaultValue = "title") String sortBy
+    ) {
 
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.getCoursesV1(),
+                        service.getCoursesV1(page, pageSize, sortBy),
                         "Success!"
                 ),
                 status
@@ -142,12 +146,17 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @GetMapping(path = "/users/{userId}/archived")
-    public ResponseEntity<?> getArchivedCourses(@PathVariable Long userId) {
+    public ResponseEntity<?> getArchivedCourses(
+            @PathVariable Long userId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false) Integer pageSize,
+            @RequestParam(name = "sort", defaultValue = "title") String sortBy
+    ) {
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.getArchivedCoursesV1(userId),
+                        service.getArchivedCoursesV1(userId, page, pageSize, sortBy),
                         "Success"
                 ),
                 HttpStatus.OK

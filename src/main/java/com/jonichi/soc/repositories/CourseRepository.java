@@ -1,16 +1,20 @@
 package com.jonichi.soc.repositories;
 
 import com.jonichi.soc.models.Course;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    List<Course> findByInstructorIdAndIsArchivedIsTrue(Long instructorId);
+    Page<Course> findByInstructorIdAndIsArchivedIsTrue(Long instructorId, Pageable pageable);
 
-    List<Course> findByIsArchivedIsFalse();
+    Integer countByIsArchivedIsFalse();
+
+    Integer countByInstructorIdAndIsArchivedIsTrue(Long instructorId);
+
+    Page<Course> findByIsArchivedIsFalse(Pageable pageable);
 
 }
