@@ -1,5 +1,7 @@
 package com.jonichi.soc.services;
 
+import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
+import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Enroll;
 import com.jonichi.soc.models.User;
@@ -21,13 +23,18 @@ public class EnrollService {
     @Autowired
     private final CourseRepository courseRepository;
 
-    public EnrollService(EnrollRepository enrollRepository, UserRepository userRepository, CourseRepository courseRepository) {
+
+    public EnrollService(
+            EnrollRepository enrollRepository,
+            UserRepository userRepository,
+            CourseRepository courseRepository
+    ) {
         this.enrollRepository = enrollRepository;
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
     }
 
-    public void enrollCourseV1(Long studentId, Long courseId) throws Exception {
+    public EnrollCourseDtoV1 enrollCourseV1(Long studentId, Long courseId) throws Exception {
 
         User student = userRepository.findById(studentId).orElseThrow();
         Course course = courseRepository.findById(courseId).orElseThrow();
@@ -48,6 +55,24 @@ public class EnrollService {
 
         Enroll enroll = new Enroll(student, course);
         enrollRepository.save(enroll);
+
+        return mapToEnrollCourseDtoV1(enroll);
+    }
+
+    private EnrollCourseDtoV1 mapToEnrollCourseDtoV1(Enroll enroll) {
+
+        return new EnrollCourseDtoV1(
+                enroll.getId(),
+                enroll.getCourse().getTitle(),
+                enroll.getCourse().getDescription(),
+                enroll.getStatus(),
+                new CourseInstructorDtoV1(
+                        enroll.getCourse().getInstructor().getId(),
+                        enroll.getCourse().getInstructor().getEmail(),
+                        enroll.getCourse().getInstructor().getImageUrl()
+                )
+        );
+
     }
 
 }

@@ -33,7 +33,7 @@ public class Course {
     private User instructor;
 
     @OneToMany(mappedBy = "course")
-    Set<Enroll> students;
+    private Set<Enroll> students;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -40,11 +40,10 @@ public class User implements UserDetails {
     private String imageUrl;
 
     @OneToMany(mappedBy = "student")
-    Set<Enroll> enrollCourses;
+    private Set<Enroll> enrollCourses;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    @JsonIgnore
     private Role role = Role.STUDENT;
 
     @CreationTimestamp

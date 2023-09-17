@@ -1,5 +1,6 @@
 package com.jonichi.soc.controllers.V1;
 
+import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.services.EnrollService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
@@ -27,15 +28,13 @@ public class EnrollControllerV1 {
     ) {
 
         try {
-            service.enrollCourseV1(studentId, courseId);
-
             HttpStatus status = HttpStatus.CREATED;
 
             return new ResponseEntity<>(
                     new ApiResponseV1(
                             status.value(),
-                            "User enrolled successfully!",
-                            "Success"
+                            service.enrollCourseV1(studentId, courseId),
+                            "User enrolled successfully!"
                     ),
                     status
             );

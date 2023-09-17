@@ -5,7 +5,6 @@ import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
 import com.jonichi.soc.models.*;
 import com.jonichi.soc.repositories.CourseRepository;
 import com.jonichi.soc.repositories.UserRepository;
-import com.jonichi.soc.utils.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +53,7 @@ public class CourseService {
         Course courseToUpdate = courseRepository.findById(courseId).orElseThrow();
         courseToUpdate.setTitle(course.getTitle());
         courseToUpdate.setDescription(course.getDescription());
+        courseToUpdate.setImageUrl(course.getImageUrl());
         courseToUpdate.setInstructor(instructor);
 
         if (courseToUpdate.getInstructor().equals(instructor)) {
@@ -94,20 +94,20 @@ public class CourseService {
     }
 
     private CourseDtoV1 mapToCourseDtoV1(Course course) {
-        CourseInstructorDtoV1 instructorDtoV1 = new CourseInstructorDtoV1();
-        instructorDtoV1.setInstructorId(course.getInstructor().getId());
-        instructorDtoV1.setEmail(course.getInstructor().getEmail());
-        instructorDtoV1.setInstructorImgUrl(course.getInstructor().getImageUrl());
 
-        CourseDtoV1 courseDtoV1 = new CourseDtoV1();
-        courseDtoV1.setId(course.getId());
-        courseDtoV1.setTitle(course.getTitle());
-        courseDtoV1.setDescription(course.getDescription());
-        courseDtoV1.setArchived(course.getArchived());
-        courseDtoV1.setInstructor(instructorDtoV1);
-        courseDtoV1.setCreatedAt(course.getCreatedAt());
-        courseDtoV1.setUpdatedAt(course.getUpdatedAt());
-
-        return courseDtoV1;
+        return new CourseDtoV1(
+                course.getId(),
+                course.getTitle(),
+                course.getDescription(),
+                course.getArchived(),
+                new CourseInstructorDtoV1(
+                        course.getInstructor().getId(),
+                        course.getInstructor().getEmail(),
+                        course.getInstructor().getImageUrl()
+                ),
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
     }
+
 }

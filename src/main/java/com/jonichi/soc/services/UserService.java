@@ -1,5 +1,6 @@
 package com.jonichi.soc.services;
 
+import com.jonichi.soc.dto.V1.CourseDtoV1;
 import com.jonichi.soc.dto.V1.UserDtoV1;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.UserRepository;
@@ -7,6 +8,9 @@ import com.jonichi.soc.utils.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -41,15 +45,16 @@ public class UserService {
 
     private UserDtoV1 mapToUserDtoV1(User user) {
 
-        UserDtoV1 userDtoV1 = new UserDtoV1();
-        userDtoV1.setId(user.getId());
-        userDtoV1.setUsername(user.getUsername());
-        userDtoV1.setFullName(user.getFullName());
-        userDtoV1.setEmail(user.getEmail());
-        userDtoV1.setImageUrl(user.getImageUrl());
-        userDtoV1.setCreatedAt(user.getCreatedAt());
-        userDtoV1.setUpdatedAt(user.getUpdatedAt());
+        return new UserDtoV1(
+                user.getId(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getImageUrl(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
 
-        return userDtoV1;
     }
 }

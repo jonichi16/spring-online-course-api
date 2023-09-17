@@ -73,16 +73,17 @@ public class AuthControllerV1 {
 
     private UserDtoV1 mapToUserDtoV1(User user) {
 
-        UserDtoV1 userDtoV1 = new UserDtoV1();
-        userDtoV1.setId(user.getId());
-        userDtoV1.setUsername(user.getUsername());
-        userDtoV1.setFullName(user.getFullName());
-        userDtoV1.setEmail(user.getEmail());
-        userDtoV1.setImageUrl(user.getImageUrl());
-        userDtoV1.setCreatedAt(user.getCreatedAt());
-        userDtoV1.setUpdatedAt(user.getUpdatedAt());
+        return new UserDtoV1(
+                user.getId(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getImageUrl(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
 
-        return userDtoV1;
     }
 
 }
