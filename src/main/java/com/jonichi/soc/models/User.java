@@ -50,7 +50,7 @@ public class User implements UserDetails {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Email(message = "Email should be valid")
+    @Email(message = "Email should be valid", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     @NotNull(message = "Email should not be empty")
     @NotBlank(message = "Email should not be empty")
     @Column(name = "email", nullable = false, unique = true)
