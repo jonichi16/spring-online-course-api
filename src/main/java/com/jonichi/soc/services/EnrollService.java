@@ -1,7 +1,7 @@
 package com.jonichi.soc.services;
 
-import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
 import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
+import com.jonichi.soc.dto.V1.EnrollStudentsDtoV1;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Enroll;
 import com.jonichi.soc.models.User;
@@ -11,6 +11,8 @@ import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.utils.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EnrollService {
@@ -58,6 +60,20 @@ public class EnrollService {
         enrollRepository.save(enroll);
 
         return Mapper.mapToEnrollCourseDtoV1(enroll);
+    }
+
+    public List<EnrollStudentsDtoV1> getCourseStudentsV1(Long instructorId, Long courseId) throws Exception {
+
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        User instructor = userRepository.findById(instructorId).orElseThrow();
+
+        if (!course.getInstructor().equals(instructor)) {
+            throw new Exception("Unauthorized");
+        }
+
+
+        List<Enroll> enrolls = enrollRepository.findByCourseId(courseId);
+        return Mapper.mapToEnrollStudentDtoV1List(enrolls);
     }
 
 }

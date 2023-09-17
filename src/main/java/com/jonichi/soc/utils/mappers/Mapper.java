@@ -1,9 +1,6 @@
 package com.jonichi.soc.utils.mappers;
 
-import com.jonichi.soc.dto.V1.CourseDtoV1;
-import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
-import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
-import com.jonichi.soc.dto.V1.UserDtoV1;
+import com.jonichi.soc.dto.V1.*;
 import com.jonichi.soc.models.Course;
 import com.jonichi.soc.models.Enroll;
 import com.jonichi.soc.models.User;
@@ -30,10 +27,33 @@ public class Mapper {
 
     }
 
+    public static EnrollStudentsDtoV1 mapToEnrollStudentDtoV1(Enroll enroll) {
+
+        return new EnrollStudentsDtoV1(
+                enroll.getStudent().getId(),
+                enroll.getStudent().getFullName(),
+                enroll.getStudent().getEmail(),
+                enroll.getStudent().getImageUrl(),
+                enroll.getStudent().getRole()
+        );
+
+    }
+
+    public static List<EnrollStudentsDtoV1> mapToEnrollStudentDtoV1List(List<Enroll> enrolls) {
+
+        List<EnrollStudentsDtoV1> enrollStudentsDtoV1List = new ArrayList<>();
+        for (Enroll enroll : enrolls) {
+            EnrollStudentsDtoV1 enrollStudentsDtoV1 = mapToEnrollStudentDtoV1(enroll);
+            enrollStudentsDtoV1List.add(enrollStudentsDtoV1);
+        }
+        return enrollStudentsDtoV1List;
+
+    }
+
     public static EnrollCourseDtoV1 mapToEnrollCourseDtoV1(Enroll enroll) {
 
         return new EnrollCourseDtoV1(
-                enroll.getId(),
+                enroll.getCourse().getId(),
                 enroll.getCourse().getTitle(),
                 enroll.getCourse().getDescription(),
                 enroll.getStatus(),

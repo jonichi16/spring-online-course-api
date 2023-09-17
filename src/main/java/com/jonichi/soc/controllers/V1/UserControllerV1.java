@@ -1,8 +1,8 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.models.User;
-import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import com.jonichi.soc.services.UserService;
+import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

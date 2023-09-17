@@ -1,15 +1,14 @@
 package com.jonichi.soc.services;
 
 import com.jonichi.soc.dto.V1.CourseDtoV1;
-import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
-import com.jonichi.soc.models.*;
+import com.jonichi.soc.models.Course;
+import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.CourseRepository;
 import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.utils.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

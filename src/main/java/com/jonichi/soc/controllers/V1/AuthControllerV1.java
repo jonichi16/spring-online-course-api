@@ -1,14 +1,12 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.config.JwtToken;
-import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
-import com.jonichi.soc.dto.V1.UserDtoV1;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.UserRepository;
+import com.jonichi.soc.services.JwtUsersDetailsService;
 import com.jonichi.soc.utils.mappers.Mapper;
 import com.jonichi.soc.utils.requests.JwtRequest;
 import com.jonichi.soc.utils.responses.V1.JwtResponseV1;
-import com.jonichi.soc.services.JwtUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

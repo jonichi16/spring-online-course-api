@@ -1,9 +1,9 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.models.Course;
+import com.jonichi.soc.services.CourseService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
-import com.jonichi.soc.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
