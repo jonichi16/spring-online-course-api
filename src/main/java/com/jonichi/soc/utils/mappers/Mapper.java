@@ -1,0 +1,86 @@
+package com.jonichi.soc.utils.mappers;
+
+import com.jonichi.soc.dto.V1.CourseDtoV1;
+import com.jonichi.soc.dto.V1.CourseInstructorDtoV1;
+import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
+import com.jonichi.soc.dto.V1.UserDtoV1;
+import com.jonichi.soc.models.Course;
+import com.jonichi.soc.models.Enroll;
+import com.jonichi.soc.models.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class Mapper {
+
+    public static UserDtoV1 mapToUserDtoV1(User user) {
+
+        return new UserDtoV1(
+                user.getId(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getImageUrl(),
+                user.getRole(),
+                mapToEnrollCourseDtoV1List(user.getEnrollCourses()),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+
+    }
+
+    public static EnrollCourseDtoV1 mapToEnrollCourseDtoV1(Enroll enroll) {
+
+        return new EnrollCourseDtoV1(
+                enroll.getId(),
+                enroll.getCourse().getTitle(),
+                enroll.getCourse().getDescription(),
+                enroll.getStatus(),
+                new CourseInstructorDtoV1(
+                        enroll.getCourse().getInstructor().getId(),
+                        enroll.getCourse().getInstructor().getEmail(),
+                        enroll.getCourse().getInstructor().getImageUrl()
+                )
+        );
+
+    }
+
+    public static List<EnrollCourseDtoV1> mapToEnrollCourseDtoV1List(Set<Enroll> enrolls) {
+
+        List<EnrollCourseDtoV1> enrollCourseDtoList = new ArrayList<>();
+        for (Enroll enroll : enrolls) {
+            EnrollCourseDtoV1 enrollCourseDtoV1 = mapToEnrollCourseDtoV1(enroll);
+            enrollCourseDtoList.add(enrollCourseDtoV1);
+        }
+
+        return enrollCourseDtoList;
+    }
+
+    public static CourseDtoV1 mapToCourseDtoV1(Course course) {
+
+        return new CourseDtoV1(
+                course.getId(),
+                course.getTitle(),
+                course.getDescription(),
+                course.getArchived(),
+                new CourseInstructorDtoV1(
+                        course.getInstructor().getId(),
+                        course.getInstructor().getEmail(),
+                        course.getInstructor().getImageUrl()
+                ),
+                course.getCreatedAt(),
+                course.getUpdatedAt()
+        );
+    }
+
+    public static List<CourseDtoV1> mapToCourseDtoV1List(List<Course> courses) {
+        List<CourseDtoV1> courseDtoList = new ArrayList<>();
+        for (Course course : courses) {
+            CourseDtoV1 courseDtoV1 = mapToCourseDtoV1(course);
+            courseDtoList.add(courseDtoV1);
+        }
+        return courseDtoList;
+    }
+
+}

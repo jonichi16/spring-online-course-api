@@ -12,6 +12,7 @@ public record UserDtoV1(
         String email,
         String imageUrl,
         Role role,
+        List<EnrollCourseDtoV1> enrolledCourses,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 

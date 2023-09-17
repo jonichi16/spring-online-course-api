@@ -1,9 +1,11 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.config.JwtToken;
+import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.dto.V1.UserDtoV1;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.UserRepository;
+import com.jonichi.soc.utils.mappers.Mapper;
 import com.jonichi.soc.utils.requests.JwtRequest;
 import com.jonichi.soc.utils.responses.V1.JwtResponseV1;
 import com.jonichi.soc.services.JwtUsersDetailsService;
@@ -49,7 +51,7 @@ public class AuthControllerV1 {
         return new ResponseEntity<>(
                 new JwtResponseV1(
                         token,
-                        mapToUserDtoV1(user),
+                        Mapper.mapToUserDtoV1(user),
                         status.value(),
                         message
                 ),
@@ -69,21 +71,6 @@ public class AuthControllerV1 {
             // user credentials
             throw new Exception("INVALID_CREDENTIALS", e);
         }
-    }
-
-    private UserDtoV1 mapToUserDtoV1(User user) {
-
-        return new UserDtoV1(
-                user.getId(),
-                user.getUsername(),
-                user.getFullName(),
-                user.getEmail(),
-                user.getImageUrl(),
-                user.getRole(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
-
     }
 
 }

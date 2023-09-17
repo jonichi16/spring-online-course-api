@@ -8,6 +8,7 @@ import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.CourseRepository;
 import com.jonichi.soc.repositories.EnrollRepository;
 import com.jonichi.soc.repositories.UserRepository;
+import com.jonichi.soc.utils.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,23 +57,7 @@ public class EnrollService {
         Enroll enroll = new Enroll(student, course);
         enrollRepository.save(enroll);
 
-        return mapToEnrollCourseDtoV1(enroll);
-    }
-
-    private EnrollCourseDtoV1 mapToEnrollCourseDtoV1(Enroll enroll) {
-
-        return new EnrollCourseDtoV1(
-                enroll.getId(),
-                enroll.getCourse().getTitle(),
-                enroll.getCourse().getDescription(),
-                enroll.getStatus(),
-                new CourseInstructorDtoV1(
-                        enroll.getCourse().getInstructor().getId(),
-                        enroll.getCourse().getInstructor().getEmail(),
-                        enroll.getCourse().getInstructor().getImageUrl()
-                )
-        );
-
+        return Mapper.mapToEnrollCourseDtoV1(enroll);
     }
 
 }
