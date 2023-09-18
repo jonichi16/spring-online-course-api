@@ -68,11 +68,23 @@ public class UserService {
 
     }
 
-    public UserDtoV1 updateRoleV1(Long id) throws NotFoundException {
+    public UserDtoV1 updateRoleV1(
+            Long id,
+            String token
+    ) throws NotFoundException, UnauthorizedException {
 
         User user = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("User not found")
         );
+
+        User auth = repository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!auth.equals(user)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
+
         user.setRole(Role.INSTRUCTOR);
 
         repository.save(user);

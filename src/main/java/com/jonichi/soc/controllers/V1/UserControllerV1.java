@@ -78,14 +78,17 @@ public class UserControllerV1 {
     }
 
     @PutMapping(path = "/{userId}/instructors")
-    public ResponseEntity<ApiResponseV1> updateRole(@PathVariable Long userId) throws NotFoundException {
+    public ResponseEntity<ApiResponseV1> updateRole(
+            @PathVariable Long userId,
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException, UnauthorizedException {
 
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.updateRoleV1(userId),
+                        service.updateRoleV1(userId, token),
                         "User's role changed to INSTRUCTOR successfully!"
                 ),
                 status

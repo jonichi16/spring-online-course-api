@@ -14,27 +14,24 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "/api/v1/")
+@RequestMapping(path = "/api/v1")
 public class EnrollControllerV1 {
 
     @Autowired
-    private final EnrollService service;
-
-    public EnrollControllerV1(EnrollService service) {
-        this.service = service;
-    }
+    private EnrollService service;
 
     @PostMapping(path = "/users/{studentId}/courses/{courseId}")
     public ResponseEntity<ApiResponseV1> enrollCourse(
             @PathVariable Long studentId,
-            @PathVariable Long courseId
-    ) throws NotFoundException, InvalidEntityException {
+            @PathVariable Long courseId,
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException, InvalidEntityException, UnauthorizedException {
         HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.enrollCourseV1(studentId, courseId),
+                        service.enrollCourseV1(studentId, courseId, token),
                         "User enrolled successfully!"
                 ),
                 status
@@ -43,17 +40,18 @@ public class EnrollControllerV1 {
     }
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
-    @GetMapping(path = "/users/{instructorId}/courses/{courseId}")
+    @GetMapping(path = "/users/{instructorId}/courses/{courseId}/students")
     public ResponseEntity<ApiResponseV1> getCourseStudents(
             @PathVariable Long instructorId,
-            @PathVariable Long courseId
+            @PathVariable Long courseId,
+            @RequestHeader(name = "Authorization") String token
     ) throws UnauthorizedException, NotFoundException {
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.getCourseStudentsV1(instructorId, courseId),
+                        service.getCourseStudentsV1(instructorId, courseId, token),
                         "Success!"
                 ),
                 status
@@ -61,16 +59,17 @@ public class EnrollControllerV1 {
     }
 
     @GetMapping(path = "/users/{userId}/enrolled-courses")
-    public ResponseEntity<ApiResponseV1> getEnrolledStudents(
-            @PathVariable Long userId
-    ) throws NotFoundException {
+    public ResponseEntity<ApiResponseV1> getEnrolledCourses(
+            @PathVariable Long userId,
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException, UnauthorizedException {
 
         HttpStatus status = HttpStatus.OK;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.getEnrolledCoursesV1(userId),
+                        service.getEnrolledCoursesV1(userId, token),
                         "Success!"
                 ),
                 status

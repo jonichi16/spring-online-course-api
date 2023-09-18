@@ -58,14 +58,15 @@ public class CourseControllerV1 {
     @PostMapping(path = "/users/{userId}/courses")
     public ResponseEntity<ApiResponseV1> addCourse(
             @PathVariable Long userId,
-            @RequestBody Course course
-    ) throws NotFoundException {
+            @RequestBody Course course,
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException, UnauthorizedException {
         HttpStatus status = HttpStatus.CREATED;
 
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.addCourseV1(userId, course),
+                        service.addCourseV1(userId, course, token),
                         "Course added successfully!"
                 ),
                 status
@@ -77,7 +78,8 @@ public class CourseControllerV1 {
     public ResponseEntity<ApiResponseV1> updateCourse(
             @PathVariable Long userId,
             @PathVariable Long courseId,
-            @RequestBody Course course
+            @RequestBody Course course,
+            @RequestHeader(name = "Authorization") String token
     ) throws UnauthorizedException, NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
@@ -85,7 +87,7 @@ public class CourseControllerV1 {
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.updateCourseV1(userId, courseId, course),
+                        service.updateCourseV1(userId, courseId, course, token),
                         "Course updated successfully!"
                 ),
                 status
@@ -97,7 +99,8 @@ public class CourseControllerV1 {
     @PutMapping(path = "/users/{userId}/courses/{courseId}/archived")
     public ResponseEntity<ApiResponseV1> archiveCourse(
             @PathVariable Long userId,
-            @PathVariable Long courseId
+            @PathVariable Long courseId,
+            @RequestHeader(name = "Authorization") String token
     ) throws UnauthorizedException, NotFoundException {
 
         HttpStatus status = HttpStatus.OK;
@@ -105,7 +108,7 @@ public class CourseControllerV1 {
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.archiveCourseV1(userId, courseId),
+                        service.archiveCourseV1(userId, courseId, token),
                         "Course archived successfully"
                 ),
                 status

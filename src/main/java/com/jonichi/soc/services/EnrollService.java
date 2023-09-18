@@ -1,5 +1,6 @@
 package com.jonichi.soc.services;
 
+import com.jonichi.soc.config.JwtToken;
 import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.dto.V1.EnrollStudentsDtoV1;
 import com.jonichi.soc.exceptions.*;
@@ -28,11 +29,15 @@ public class EnrollService {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private JwtToken jwtToken;
+
 
     public EnrollCourseDtoV1 enrollCourseV1(
             Long studentId,
-            Long courseId
-    ) throws NotFoundException, InvalidEntityException {
+            Long courseId,
+            String token
+    ) throws NotFoundException, InvalidEntityException, UnauthorizedException {
 
         User student = userRepository.findById(studentId).orElseThrow(
                 () -> new NotFoundException("Student not found!")
@@ -40,6 +45,14 @@ public class EnrollService {
         Course course = courseRepository.findById(courseId).orElseThrow(
                 () -> new NotFoundException("Course not found!")
         );
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!user.equals(student)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         Enroll existingEnroll = enrollRepository.findByStudentIdAndCourseId(studentId, courseId);
 
@@ -63,7 +76,8 @@ public class EnrollService {
 
     public List<EnrollStudentsDtoV1> getCourseStudentsV1(
             Long instructorId,
-            Long courseId
+            Long courseId,
+            String token
     ) throws NotFoundException, UnauthorizedException {
 
         Course course = courseRepository.findById(courseId).orElseThrow(
@@ -72,6 +86,14 @@ public class EnrollService {
         User instructor = userRepository.findById(instructorId).orElseThrow(
                 () -> new NotFoundException("Instructor not found!")
         );
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!user.equals(instructor)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         if (!course.getInstructor().equals(instructor)) {
             throw new UnauthorizedException("Unauthorized instructor!");
@@ -82,12 +104,21 @@ public class EnrollService {
     }
 
     public List<EnrollCourseDtoV1> getEnrolledCoursesV1(
-            Long userId
-    ) throws NotFoundException {
+            Long userId,
+            String token
+    ) throws NotFoundException, UnauthorizedException {
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("User not found!")
         );
+
+        User auth = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!auth.equals(user)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         List<Enroll> enrolls = enrollRepository.findByStudentId(userId);
 

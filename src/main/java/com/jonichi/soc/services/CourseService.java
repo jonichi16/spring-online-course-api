@@ -28,11 +28,23 @@ public class CourseService {
     private JwtToken jwtToken;
 
     // V1 of CourseService
-    public CourseDtoV1 addCourseV1(Long userId, Course course) throws NotFoundException {
+    public CourseDtoV1 addCourseV1(
+            Long userId,
+            Course course,
+            String token
+    ) throws NotFoundException, UnauthorizedException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("Instructor not found!")
         );
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!user.equals(instructor)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         course.setInstructor(instructor);
         courseRepository.save(course);
@@ -63,7 +75,8 @@ public class CourseService {
     public CourseDtoV1 updateCourseV1(
             Long userId,
             Long courseId,
-            Course course
+            Course course,
+            String token
     ) throws NotFoundException, UnauthorizedException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
@@ -73,6 +86,14 @@ public class CourseService {
         Course courseToUpdate = courseRepository.findById(courseId).orElseThrow(
                 () -> new NotFoundException("Course not found!")
         );
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!user.equals(instructor)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         if (!courseToUpdate.getInstructor().equals(instructor)) {
             throw new UnauthorizedException("Unauthorized instructor!");
@@ -92,7 +113,8 @@ public class CourseService {
 
     public CourseDtoV1 archiveCourseV1(
             Long userId,
-            Long courseId
+            Long courseId,
+            String token
     ) throws NotFoundException, UnauthorizedException {
 
         User instructor = userRepository.findById(userId).orElseThrow(
@@ -102,6 +124,14 @@ public class CourseService {
         Course courseToUpdate = courseRepository.findById(courseId).orElseThrow(
                 () -> new NotFoundException("Course not found!")
         );
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        if (!user.equals(instructor)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         if (!courseToUpdate.getInstructor().equals(instructor)) {
             throw new UnauthorizedException("Unauthorized instructor!");
@@ -124,7 +154,6 @@ public class CourseService {
         User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
                 () -> new NotFoundException("User not found!")
         );
-
 
         if (!user.getId().equals(instructorId)) {
             throw new UnauthorizedException("Unauthorized");
