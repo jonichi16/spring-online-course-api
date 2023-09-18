@@ -42,9 +42,9 @@ public class UserService {
                 () -> new NotFoundException("User not found!")
         );
 
-        if (!userToUpdate.getUsername().equals(jwtToken.getUsernameFromToken(token))) {
-            throw new UnauthorizedException("Unauthorized");
-        }
+//        if (!userToUpdate.getUsername().equals(jwtToken.getUsernameFromToken(token))) {
+//            throw new UnauthorizedException("Unauthorized");
+//        }
 
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setImageUrl(user.getImageUrl());
@@ -54,6 +54,18 @@ public class UserService {
         repository.save(userToUpdate);
 
         return Mapper.mapToUserDtoV1(userToUpdate);
+    }
+
+    public UserDtoV1 getCurrentUserV1(String token) throws NotFoundException {
+
+        String username = jwtToken.getUsernameFromToken(token);
+
+        User user = repository.findByUsername(username).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        return Mapper.mapToUserDtoV1(user);
+
     }
 
     public UserDtoV1 updateRoleV1(Long id) throws NotFoundException {

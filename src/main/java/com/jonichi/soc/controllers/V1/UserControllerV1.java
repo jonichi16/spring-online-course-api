@@ -24,6 +24,24 @@ public class UserControllerV1 {
         this.service = service;
     }
 
+    @GetMapping(path = "/me")
+    public ResponseEntity<ApiResponseV1> getCurrentUser(
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.getCurrentUserV1(token),
+                        "Success!"
+                ),
+                status
+        );
+
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponseV1> registerUser(@RequestBody @Valid User user) {
 
