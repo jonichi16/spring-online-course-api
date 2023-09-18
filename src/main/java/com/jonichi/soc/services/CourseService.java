@@ -1,5 +1,6 @@
 package com.jonichi.soc.services;
 
+import com.jonichi.soc.config.JwtToken;
 import com.jonichi.soc.dto.V1.CourseDtoV1;
 import com.jonichi.soc.exceptions.NotFoundException;
 import com.jonichi.soc.exceptions.UnauthorizedException;
@@ -18,15 +19,13 @@ import org.springframework.stereotype.Service;
 public class CourseService {
 
     @Autowired
-    private final CourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository) {
-        this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private JwtToken jwtToken;
 
     // V1 of CourseService
     public CourseDtoV1 addCourseV1(Long userId, Course course) throws NotFoundException {
@@ -82,6 +81,8 @@ public class CourseService {
         courseToUpdate.setTitle(course.getTitle());
         courseToUpdate.setDescription(course.getDescription());
         courseToUpdate.setImageUrl(course.getImageUrl());
+        courseToUpdate.setAmount(course.getAmount());
+        courseToUpdate.setCurrencyCode(course.getCurrencyCode());
         courseToUpdate.setInstructor(instructor);
 
         courseRepository.save(courseToUpdate);
@@ -114,10 +115,20 @@ public class CourseService {
 
     public Page<CourseDtoV1> getArchivedCoursesV1(
             Long instructorId,
+            String token,
             int page,
             Integer pageSize,
             String sortBy
-    ) {
+    ) throws UnauthorizedException, NotFoundException {
+
+        User user = userRepository.findByUsername(jwtToken.getUsernameFromToken(token)).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+
+        if (!user.getId().equals(instructorId)) {
+            throw new UnauthorizedException("Unauthorized");
+        }
 
         if (pageSize == null) {
             pageSize = courseRepository.countByInstructorIdAndIsArchivedIsTrue(instructorId);

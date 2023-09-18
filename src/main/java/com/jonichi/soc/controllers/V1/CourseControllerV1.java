@@ -117,15 +117,16 @@ public class CourseControllerV1 {
     @GetMapping(path = "/users/{userId}/archived")
     public ResponseEntity<ApiResponseV1> getArchivedCourses(
             @PathVariable Long userId,
+            @RequestHeader(name = "Authorization") String token,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", required = false) Integer pageSize,
             @RequestParam(name = "sort", defaultValue = "title") String sortBy
-    ) {
+    ) throws UnauthorizedException, NotFoundException {
         HttpStatus status = HttpStatus.OK;
         return new ResponseEntity<>(
                 new ApiResponseV1(
                         status.value(),
-                        service.getArchivedCoursesV1(userId, page, pageSize, sortBy),
+                        service.getArchivedCoursesV1(userId, token, page, pageSize, sortBy),
                         "Success"
                 ),
                 HttpStatus.OK

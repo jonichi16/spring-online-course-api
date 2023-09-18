@@ -41,7 +41,7 @@ public class UserService {
         User userToUpdate = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("User not found!")
         );
-
+//
 //        if (!userToUpdate.getUsername().equals(jwtToken.getUsernameFromToken(token))) {
 //            throw new UnauthorizedException("Unauthorized");
 //        }

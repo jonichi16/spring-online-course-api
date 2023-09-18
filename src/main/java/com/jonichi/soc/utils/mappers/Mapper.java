@@ -62,7 +62,9 @@ public class Mapper {
                         enroll.getCourse().getInstructor().getId(),
                         enroll.getCourse().getInstructor().getEmail(),
                         enroll.getCourse().getInstructor().getImageUrl()
-                )
+                ),
+                enroll.getCreatedAt(),
+                enroll.getUpdatedAt()
         );
 
     }
@@ -88,6 +90,7 @@ public class Mapper {
                         course.getAmount(),
                         course.getCurrencyCode()
                 ),
+                course.getImageUrl(),
                 course.getArchived(),
                 new CourseInstructorDtoV1(
                         course.getInstructor().getId(),

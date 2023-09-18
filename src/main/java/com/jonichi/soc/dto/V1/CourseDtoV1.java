@@ -7,6 +7,7 @@ public record CourseDtoV1(
         String title,
         String description,
         CoursePriceDtoV1 price,
+        String imageUrl,
         boolean isArchived,
         CourseInstructorDtoV1 instructor,
         LocalDateTime createdAt,
