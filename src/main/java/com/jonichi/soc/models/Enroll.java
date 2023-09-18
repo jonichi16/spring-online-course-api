@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +29,14 @@ public class Enroll {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status = Status.PENDING;
+
+    @Column(name = "rating")
+    @Max(5)
+    @Min(1)
+    private Integer rating;
+
+    @Column(name = "comment", columnDefinition = "TEXT")
+    private String comment;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -70,6 +80,22 @@ public class Enroll {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public LocalDateTime getCreatedAt() {

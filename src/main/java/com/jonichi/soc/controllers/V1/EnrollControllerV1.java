@@ -3,6 +3,7 @@ package com.jonichi.soc.controllers.V1;
 import com.jonichi.soc.dto.V1.EnrollCourseDtoV1;
 import com.jonichi.soc.exceptions.*;
 import com.jonichi.soc.services.EnrollService;
+import com.jonichi.soc.utils.requests.RateRequest;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
 import com.jonichi.soc.utils.responses.V1.ExceptionResponseV1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,26 @@ public class EnrollControllerV1 {
                         "Course status: " + course.status()
                 ),
                 status
+        );
+
+    }
+
+    @PatchMapping(path = "/users/{userId}/courses/{courseId}/rate")
+    public ResponseEntity<ApiResponseV1> rateCourseV1(
+            @PathVariable Long userId,
+            @PathVariable Long courseId,
+            @RequestBody RateRequest rateRequest
+    ) throws NotFoundException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.rateCourseV1(userId, courseId, rateRequest),
+                        "User commented on the course successfully!"
+                ),
+                 status
         );
 
     }

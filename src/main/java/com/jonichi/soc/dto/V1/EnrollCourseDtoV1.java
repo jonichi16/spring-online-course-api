@@ -8,6 +8,8 @@ public record EnrollCourseDtoV1(
         Long courseId,
         String title,
         String description,
+        int ratings,
+        String comments,
         Status status,
         CourseInstructorDtoV1 instructor,
         LocalDateTime createdAt,

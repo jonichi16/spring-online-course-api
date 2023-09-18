@@ -12,10 +12,12 @@ import com.jonichi.soc.repositories.EnrollRepository;
 import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.utils.enums.Status;
 import com.jonichi.soc.utils.mappers.Mapper;
+import com.jonichi.soc.utils.requests.RateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class EnrollService {
@@ -153,6 +155,31 @@ public class EnrollService {
         enrollRepository.save(enrollToUpdate);
 
         return Mapper.mapToEnrollCourseDtoV1(enrollToUpdate);
+    }
+
+    public EnrollCourseDtoV1 rateCourseV1(
+            Long userId,
+            Long courseId,
+            RateRequest rateRequest
+    ) throws NotFoundException {
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new NotFoundException("Course not found!")
+        );
+
+        Enroll enrollToUpdate = enrollRepository.findByStudentIdAndCourseId(userId, courseId);
+
+        enrollToUpdate.setRating(rateRequest.getRating());
+        enrollToUpdate.setComment(rateRequest.getComment());
+
+        enrollRepository.save(enrollToUpdate);
+
+        return Mapper.mapToEnrollCourseDtoV1(enrollToUpdate);
+
     }
 
 }

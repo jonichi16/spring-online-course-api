@@ -57,6 +57,8 @@ public class Mapper {
                 enroll.getCourse().getId(),
                 enroll.getCourse().getTitle(),
                 enroll.getCourse().getDescription(),
+                enroll.getRating(),
+                enroll.getComment(),
                 enroll.getStatus(),
                 new CourseInstructorDtoV1(
                         enroll.getCourse().getInstructor().getId(),
