@@ -1,6 +1,7 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.config.JwtToken;
+import com.jonichi.soc.exceptions.NotFoundException;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.UserRepository;
 import com.jonichi.soc.services.JwtUsersDetailsService;
@@ -37,11 +38,13 @@ public class AuthControllerV1 {
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(
             @RequestBody JwtRequest jwtRequest
-    ) throws Exception {
+    ) throws NotFoundException, Exception {
         authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(jwtRequest.getUsername());
-        final User user = repository.findByUsername(jwtRequest.getUsername()).orElseThrow();
+        final User user = repository.findByUsername(jwtRequest.getUsername()).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
         final HttpStatus status = HttpStatus.OK;
         final String token = jwtToken.generateToken(userDetails);
         final String message = "Login Successful";

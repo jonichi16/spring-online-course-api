@@ -19,24 +19,14 @@ import java.util.List;
 public class EnrollService {
 
     @Autowired
-    private final EnrollRepository enrollRepository;
+    private EnrollRepository enrollRepository;
 
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private final CourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
-
-    public EnrollService(
-            EnrollRepository enrollRepository,
-            UserRepository userRepository,
-            CourseRepository courseRepository
-    ) {
-        this.enrollRepository = enrollRepository;
-        this.userRepository = userRepository;
-        this.courseRepository = courseRepository;
-    }
 
     public EnrollCourseDtoV1 enrollCourseV1(
             Long studentId,
@@ -88,6 +78,20 @@ public class EnrollService {
 
         List<Enroll> enrolls = enrollRepository.findByCourseId(courseId);
         return Mapper.mapToEnrollStudentDtoV1List(enrolls);
+    }
+
+    public List<EnrollCourseDtoV1> getEnrolledCoursesV1(
+            Long userId
+    ) throws NotFoundException {
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        List<Enroll> enrolls = enrollRepository.findByStudentId(userId);
+
+        return Mapper.mapToEnrollCourseDtoV1List(enrolls);
+
     }
 
 }

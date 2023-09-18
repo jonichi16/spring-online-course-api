@@ -23,7 +23,7 @@ public class EnrollControllerV1 {
     }
 
     @PostMapping(path = "/users/{studentId}/courses/{courseId}")
-    public ResponseEntity<?> enrollCourse(
+    public ResponseEntity<ApiResponseV1> enrollCourse(
             @PathVariable Long studentId,
             @PathVariable Long courseId
     ) throws NotFoundException, InvalidEntityException {
@@ -42,7 +42,7 @@ public class EnrollControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @GetMapping(path = "/users/{instructorId}/courses/{courseId}")
-    public ResponseEntity<?> getCourseStudents(
+    public ResponseEntity<ApiResponseV1> getCourseStudents(
             @PathVariable Long instructorId,
             @PathVariable Long courseId
     ) throws UnauthorizedException, NotFoundException {
@@ -56,6 +56,24 @@ public class EnrollControllerV1 {
                 ),
                 status
         );
+    }
+
+    @GetMapping(path = "/users/{userId}/enrolled-courses")
+    public ResponseEntity<ApiResponseV1> getEnrolledStudents(
+            @PathVariable Long userId
+    ) throws NotFoundException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.getEnrolledCoursesV1(userId),
+                        "Success!"
+                ),
+                status
+        );
+
     }
 
 }

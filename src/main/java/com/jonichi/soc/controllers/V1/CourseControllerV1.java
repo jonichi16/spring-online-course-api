@@ -17,11 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class CourseControllerV1 {
 
     @Autowired
-    private final CourseService service;
-
-    public CourseControllerV1(CourseService service) {
-        this.service = service;
-    }
+    private CourseService service;
 
     @GetMapping(path = "/courses")
     public ResponseEntity<ApiResponseV1> getCourses(
@@ -60,7 +56,7 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @PostMapping(path = "/users/{userId}/courses")
-    public ResponseEntity<?> addCourse(
+    public ResponseEntity<ApiResponseV1> addCourse(
             @PathVariable Long userId,
             @RequestBody Course course
     ) throws NotFoundException {
@@ -78,7 +74,7 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @PutMapping(path = "/users/{userId}/courses/{courseId}")
-    public ResponseEntity<?> updateCourse(
+    public ResponseEntity<ApiResponseV1> updateCourse(
             @PathVariable Long userId,
             @PathVariable Long courseId,
             @RequestBody Course course
@@ -99,7 +95,7 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @PutMapping(path = "/users/{userId}/courses/{courseId}/archived")
-    public ResponseEntity<?> archiveCourse(
+    public ResponseEntity<ApiResponseV1> archiveCourse(
             @PathVariable Long userId,
             @PathVariable Long courseId
     ) throws UnauthorizedException, NotFoundException {
@@ -119,7 +115,7 @@ public class CourseControllerV1 {
 
     @PreAuthorize("hasAuthority('INSTRUCTOR')")
     @GetMapping(path = "/users/{userId}/archived")
-    public ResponseEntity<?> getArchivedCourses(
+    public ResponseEntity<ApiResponseV1> getArchivedCourses(
             @PathVariable Long userId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", required = false) Integer pageSize,
@@ -137,7 +133,7 @@ public class CourseControllerV1 {
     }
 
     @GetMapping(path = "/courses/search")
-    public ResponseEntity<?> searchCourses(
+    public ResponseEntity<ApiResponseV1> searchCourses(
             @RequestParam(name = "q") String q,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", required = false) Integer pageSize,
