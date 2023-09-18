@@ -84,6 +84,10 @@ public class Mapper {
                 course.getId(),
                 course.getTitle(),
                 course.getDescription(),
+                new CoursePriceDtoV1(
+                        course.getAmount(),
+                        course.getCurrencyCode()
+                ),
                 course.getArchived(),
                 new CourseInstructorDtoV1(
                         course.getInstructor().getId(),

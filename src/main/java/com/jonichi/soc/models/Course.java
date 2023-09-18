@@ -4,6 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -20,6 +21,12 @@ public class Course {
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "amount", columnDefinition = "DECIMAL(10, 2)")
+    private BigDecimal amount;
+
+    @Column(name = "currency_code")
+    private String currencyCode;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -45,9 +52,11 @@ public class Course {
     public Course() {
     }
 
-    public Course(String title, String description, String imageUrl, Boolean isArchived) {
+    public Course(String title, String description, BigDecimal amount, String currencyCode, String imageUrl, Boolean isArchived) {
         this.title = title;
         this.description = description;
+        this.amount = amount;
+        this.currencyCode = currencyCode;
         this.imageUrl = imageUrl;
         this.isArchived = isArchived;
     }
@@ -66,6 +75,22 @@ public class Course {
 
     public String getDescription() {
         return description;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public String getImageUrl() {
