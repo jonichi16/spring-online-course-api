@@ -1,6 +1,7 @@
 package com.jonichi.soc.controllers.V1;
 
 import com.jonichi.soc.exceptions.NotFoundException;
+import com.jonichi.soc.exceptions.UnauthorizedException;
 import com.jonichi.soc.models.User;
 import com.jonichi.soc.services.UserService;
 import com.jonichi.soc.utils.responses.V1.ApiResponseV1;
@@ -36,6 +37,26 @@ public class UserControllerV1 {
                 ),
                 status
         );
+    }
+
+    @PutMapping(path = "/{userId}")
+    public ResponseEntity<ApiResponseV1> updateUser(
+            @PathVariable Long userId,
+            @RequestBody User user,
+            @RequestHeader(name = "Authorization") String token
+    ) throws NotFoundException, UnauthorizedException {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.updateUserV1(userId, user, token),
+                        "User updated successfully!"
+                ),
+                 status
+        );
+
     }
 
     @PutMapping(path = "/{userId}/instructors")
