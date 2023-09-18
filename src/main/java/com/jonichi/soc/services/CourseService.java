@@ -132,4 +132,22 @@ public class CourseService {
         return Mapper.mapToCourseDtoV1Page(archivedCourses);
     }
 
+    public Page<CourseDtoV1> searchCourseV1(
+            int page,
+            Integer pageSize,
+            String sortBy,
+            String query
+    ) {
+
+        if (pageSize == null) {
+            pageSize = courseRepository.countByIsArchivedIsFalse();
+        }
+
+        PageRequest pageable = PageRequest.of(page, pageSize, Sort.by(sortBy));
+        Page<Course> resultCourses = courseRepository.findByQuery(pageable, "%" + query + "%");
+
+        return Mapper.mapToCourseDtoV1Page(resultCourses);
+
+    }
+
 }

@@ -136,4 +136,24 @@ public class CourseControllerV1 {
         );
     }
 
+    @GetMapping(path = "/courses/search")
+    public ResponseEntity<?> searchCourses(
+            @RequestParam(name = "q") String q,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false) Integer pageSize,
+            @RequestParam(name = "sort", defaultValue = "title") String sortBy
+    ) {
+
+        HttpStatus status = HttpStatus.OK;
+
+        return new ResponseEntity<>(
+                new ApiResponseV1(
+                        status.value(),
+                        service.searchCourseV1(page, pageSize, sortBy, q),
+                        "Success"
+                ),
+                status
+        );
+    }
+
 }
