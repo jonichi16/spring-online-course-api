@@ -9,6 +9,7 @@ import com.jonichi.soc.models.User;
 import com.jonichi.soc.repositories.CourseRepository;
 import com.jonichi.soc.repositories.EnrollRepository;
 import com.jonichi.soc.repositories.UserRepository;
+import com.jonichi.soc.utils.enums.Status;
 import com.jonichi.soc.utils.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,6 +93,35 @@ public class EnrollService {
 
         return Mapper.mapToEnrollCourseDtoV1List(enrolls);
 
+    }
+
+    public EnrollCourseDtoV1 updateCourseStatusV1(
+            Long userId,
+            Long courseId
+    ) throws NotFoundException {
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+
+        Course course = courseRepository.findById(courseId).orElseThrow(
+                () -> new NotFoundException("Course not found!")
+        );
+
+        Enroll enrollToUpdate = enrollRepository.findByStudentIdAndCourseId(userId, courseId);
+
+        Status status =  enrollToUpdate.getStatus();
+
+        if (status.equals(Status.PENDING))
+            status = Status.ON_GOING;
+        else if (status.equals(Status.ON_GOING))
+            status = Status.COMPLETED;
+
+        enrollToUpdate.setStatus(status);
+
+        enrollRepository.save(enrollToUpdate);
+
+        return Mapper.mapToEnrollCourseDtoV1(enrollToUpdate);
     }
 
 }
